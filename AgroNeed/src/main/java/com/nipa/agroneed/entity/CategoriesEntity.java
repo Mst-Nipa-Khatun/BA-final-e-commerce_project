@@ -15,7 +15,7 @@ public class CategoriesEntity extends BaseEntity {
     private String name;
 
     @Column(name = "parent_id")
-    private Integer parentId;
+    private Long parentId;
 
 
 

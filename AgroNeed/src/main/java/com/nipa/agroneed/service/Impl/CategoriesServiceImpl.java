@@ -32,15 +32,7 @@ public class CategoriesServiceImpl implements CategoriesService {
         if (categories != null) {
             return ResponseBuilder.getFailResponse(HttpStatus.BAD_REQUEST, null, "Category already exists");
         }
-        /* if (categoriesDto.getParentId() == null) {
-             CategoriesEntity category = new CategoriesEntity();
-             category.setName(categoriesDto.getName());
-             category.setParentId(categoriesDto.getParentId());
-             category.setStatus(1);
-             CategoriesEntity saved = categoriesRepo.save(category);
-             return ResponseBuilder.getSuccessResponse(HttpStatus.CREATED, saved, "Category created successfully");
-         }
-*/
+
         CategoriesEntity category = new CategoriesEntity();
         category.setName(categoriesDto.getName());
         category.setParentId(categoriesDto.getParentId());
@@ -53,12 +45,6 @@ public class CategoriesServiceImpl implements CategoriesService {
             }
             category.setParentId(parentCategory.getId());
         }
-        /*CategoriesEntity category = new CategoriesEntity();
-         category.setName(categoriesDto.getName());
-         category.setParentId(categoriesDto.getParentId());
-         category.setStatus(1);
-         CategoriesEntity saved = categoriesRepo.save(category);
-*/
         CategoriesEntity savedCategory = categoriesRepo.save(category);
 
         return ResponseBuilder.getSuccessResponse(HttpStatus.CREATED, savedCategory, "Category created successfully");
@@ -73,6 +59,7 @@ public class CategoriesServiceImpl implements CategoriesService {
 
             for (CategoriesEntity categoriesEntity : categoriesEntities) {
                 CategoriesDto categoriesDto = new CategoriesDto();
+                categoriesDto.setId(categoriesEntity.getId());
                 categoriesDto.setName(categoriesEntity.getName());
                 categoriesDto.setParentId(categoriesEntity.getParentId());
                 categoriesDto.setStatus(categoriesEntity.getStatus());
@@ -85,46 +72,41 @@ public class CategoriesServiceImpl implements CategoriesService {
 
     @Override
     public Response getCategoryById(Long id) {
-        CategoriesEntity categories=categoriesRepo.findByIdAndStatus(id,1);
+        CategoriesEntity categories = categoriesRepo.findByIdAndStatus(id, 1);
         if (categories != null) {
             CategoriesDto categoriesDto = new CategoriesDto();
             categoriesDto.setName(categories.getName());
             categoriesDto.setParentId(categories.getParentId());
             categoriesDto.setStatus(categories.getStatus());
-            CategoriesEntity savedCategory=categoriesRepo.save(categories);
-            return ResponseBuilder.getSuccessResponse(HttpStatus.OK, savedCategory, "Category found");
+            return ResponseBuilder.getSuccessResponse(HttpStatus.OK, categoriesDto, "Category found");
         }
         return ResponseBuilder.getFailResponse(HttpStatus.BAD_REQUEST, null, "No category found");
     }
 
     @Override
     public Response getCategoryByParentId(Long parentId) {
-        CategoriesEntity categories=categoriesRepo.findByParentIdAndStatus(parentId,1);
+        CategoriesEntity categories = categoriesRepo.findByParentIdAndStatus(parentId, 1);
         if (categories != null) {
             CategoriesDto categoriesDto = new CategoriesDto();
             categoriesDto.setName(categories.getName());
             categoriesDto.setParentId(categories.getParentId());
             categoriesDto.setStatus(categories.getStatus());
-            CategoriesEntity savedCategory=categoriesRepo.save(categories);
-            return ResponseBuilder.getSuccessResponse(HttpStatus.OK, savedCategory, "Category found");
+            return ResponseBuilder.getSuccessResponse(HttpStatus.OK, categoriesDto, "Category found");
         }
         return ResponseBuilder.getFailResponse(HttpStatus.BAD_REQUEST, null, "No category found");
     }
 
     @Override
     public Response deleteCategoryById(Long id) {
-        CategoriesEntity categories=categoriesRepo.findByIdAndStatus(id,1);
+        CategoriesEntity categories = categoriesRepo.findByIdAndStatus(id, 1);
         if (categories != null) {
             categories.setStatus(0);
-           // CategoriesEntity savedCategory= categoriesRepo.save(categories);
+            CategoriesEntity deletedCategory = categoriesRepo.save(categories);
 
             CategoriesDto categoriesDto = new CategoriesDto();
-            categoriesDto.setName(categories.getName());
-            categoriesDto.setParentId(categories.getParentId());
-            categoriesDto.setStatus(categories.getStatus());
-
-            CategoriesEntity savedCategory=categoriesRepo.save(categories);
-            return ResponseBuilder.getSuccessResponse(HttpStatus.OK, savedCategory, "Category deleted successfully");
+            categoriesDto.setName(deletedCategory.getName());
+            categoriesDto.setParentId(deletedCategory.getParentId());
+            return ResponseBuilder.getSuccessResponse(HttpStatus.OK, deletedCategory, "Category deleted successfully");
 
         }
         return ResponseBuilder.getFailResponse(HttpStatus.BAD_REQUEST, null, "No category found");
@@ -132,15 +114,21 @@ public class CategoriesServiceImpl implements CategoriesService {
 
     @Override
     public Response editCategoryById(Long id, CategoriesDto categoriesDto) {
-        CategoriesEntity categories=categoriesRepo.findByIdAndStatus(id,categoriesDto.getStatus());
+        CategoriesEntity categories = categoriesRepo.findByIdAndStatus(id, 1);
         if (categories != null) {
-            //dto theke entity
-            CategoriesEntity categoriesEntity = new CategoriesEntity();
-            categoriesEntity.setName(categoriesDto.getName());
-            categoriesEntity.setParentId(categoriesDto.getParentId());
-            categoriesEntity.setStatus(categoriesDto.getStatus());
-            CategoriesEntity savedCategory=categoriesRepo.save(categoriesEntity);
-            return ResponseBuilder.getSuccessResponse(HttpStatus.OK, savedCategory, "Category edited successfully");
+            categories.setName(categoriesDto.getName());
+            categories.setParentId(categoriesDto.getParentId());
+            categories.setStatus(categoriesDto.getStatus());
+            CategoriesEntity savedCategory = categoriesRepo.save(categories);
+
+            CategoriesDto updatedCategoriesDto = new CategoriesDto();
+            updatedCategoriesDto.setId(savedCategory.getId());
+            updatedCategoriesDto.setName(savedCategory.getName());
+            updatedCategoriesDto.setParentId(savedCategory.getParentId());
+            updatedCategoriesDto.setStatus(savedCategory.getStatus());
+
+
+            return ResponseBuilder.getSuccessResponse(HttpStatus.OK, updatedCategoriesDto, "Category edited successfully");
         }
         return ResponseBuilder.getFailResponse(HttpStatus.BAD_REQUEST, null, "No category found");
     }

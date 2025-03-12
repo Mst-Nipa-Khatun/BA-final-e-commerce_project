@@ -80,17 +80,46 @@
 
         $(".validation").click(function (event) {
             event.preventDefault();
+
             let validationOK = submitCategory();
             if (validationOK) {
-                toastr.success('Successfully submitted');
-                //Ajax
-            }
+              let requestBody=  {
+                    "name": null,
+                    "parentId": null
+              }
+                let isParent = $("#isParent").is(":checked");
+                let category = $("#category").val();
+                let categorySelected = $("#categorySelect select").val();
+                if (isParent) {
+                    requestBody.isParent = null;
+                    requestBody.name = category;
+                } else {
+                    requestBody.name = category;
+                    //requestBody.parentId=categorySelected;//todo need to set it dynamically
+                    requestBody.parentId = null;
+                }
+
+                var settings = {
+                    "url": "http://localhost:8088/AgroNeed/create",
+                    "method": "POST",
+                    "timeout": 0,
+                    "headers": {
+                        "Content-Type": "application/json"
+                    },
+                    "data": JSON.stringify(requestBody),
+                };
+
+                $.ajax(settings).done(function (response) {
+                    console.log(response);
+                    toastr.success(response.message)
+                });
+
+            };
         });
     });
 
     function submitCategory() {
         let isParent = $("#isParent").is(":checked");
-        //let isParent = $("#isParent").prop("checked");
         let category = $("#category").val();
         let categorySelected = $("#categorySelect select").val();
 

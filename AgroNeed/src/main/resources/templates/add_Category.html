@@ -25,7 +25,7 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <a class="navbar-brand" href="#">Category Details</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            aria-controls="navbarSupportedContent" aria-expanded="false" ari<option selected>Select</option>a-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
 
@@ -51,12 +51,12 @@
                 <input type="text" class="form-control" id="category" placeholder="Category Name">
             </div>
             <div class="col-md-6" id="categorySelect">
-                <label class="form-label">Categories</label>
+                <label class="form-label">Parent Category</label>
                 <select class="form-control">
-                    <option selected>Select</option>
+                   <!--
                     <option>Fruits</option>
                     <option>Cloths</option>
-                    <option>Cosmetics</option>
+                    <option>Cosmetics</option>-->
                 </select>
             </div>
         </div>
@@ -68,7 +68,9 @@
 
 <script>
     $(document).ready(function () {
-        toastr.success('Welcome to this page');
+       // toastr.success('Welcome to this page');
+        getAllCategory();
+
 
         $("#isParent").on("change", function () {
             if ($(this).is(":checked")) {
@@ -89,14 +91,14 @@
               }
                 let isParent = $("#isParent").is(":checked");
                 let category = $("#category").val();
-                let categorySelected = $("#categorySelect select").val();
+                let categorySelected = $("#categorySelect select :selected").val();
                 if (isParent) {
                     requestBody.isParent = null;
                     requestBody.name = category;
                 } else {
                     requestBody.name = category;
-                    //requestBody.parentId=categorySelected;//todo need to set it dynamically
-                    requestBody.parentId = null;
+                    requestBody.parentId=categorySelected;
+                    //requestBody.parentId = null;
                 }
 
                 var settings = {
@@ -112,6 +114,7 @@
                 $.ajax(settings).done(function (response) {
                     console.log(response);
                     toastr.success(response.message)
+                    location.reload();
                 });
 
             };
@@ -124,19 +127,38 @@
         let categorySelected = $("#categorySelect select").val();
 
         if (category === undefined || category === '' || category.trim() === '') {
-            toastr.error("Category is required.")
+            toastr.error("Category Name is required.")
             return false;
         }
-
-        //first of all amr dropdown select er value newa hoy ni,thn checkbox e value hoy na hoy prop or is("cheked")
         if (!isParent) {
             if (!categorySelected || categorySelected === 'Select') {
-                toastr.error("Categories is required.");
+                toastr.error(" Parent Category is required.");
                 return false;
             }
         }
 
         return true;
+    }
+    function getAllCategory(){
+
+        var settings = {
+            "url": "http://localhost:8088/AgroNeed/getAll",
+            "method": "GET",
+            "timeout": 0,
+        };
+
+        $.ajax(settings).done(function (response) {
+            console.log(response);
+            //toastr.success(response.message);
+            console.log(response);
+            $("#categorySelect select").append(`<option selected>Select</option>`)
+            response.content.forEach(current=>{
+                $("#categorySelect select").append(`
+                    <option value="` + current.id + `">` + current.name + `</option>
+                `);
+            })
+
+        });
     }
 
 </script>

@@ -23,7 +23,7 @@
 <body>
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" href="#">Category Details</a>
+    <a class="navbar-brand" href="#">AgroNeed</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -47,11 +47,11 @@
         </div>
         <div class="row mb-3">
             <div class="col-md-6">
-                <label for="category" class="form-label">Category Name</label>
+                <label for="category" class="form-label">Category</label>
                 <input type="text" class="form-control" id="category" placeholder="Category Name">
             </div>
             <div class="col-md-6" id="categorySelect">
-                <label class="form-label">Parent Category</label>
+                <label class="form-label">Categories</label>
                 <select class="form-control">
                    <!--
                     <option>Fruits</option>
@@ -103,7 +103,7 @@
                 }
 
                 var settings = {
-                    "url": "http://localhost:8088/AgroNeed/create",
+                    "url": "http://localhost:8088/Categories/create",
                     "method": "POST",
                     "timeout": 0,
                     "headers": {
@@ -140,10 +140,11 @@
 
         return true;
     }
+
     function getAllCategory(){
 
         var settings = {
-            "url": "http://localhost:8088/AgroNeed/getAll",
+            "url": "http://localhost:8088/Categories/getAll",
             "method": "GET",
             "timeout": 0,
         };

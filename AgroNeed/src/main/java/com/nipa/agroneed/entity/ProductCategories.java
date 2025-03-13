@@ -14,6 +14,7 @@ public class ProductCategories extends BaseEntity{
     @Column(name = "category_id")
     private Integer categoryId;
 
+
 //    id INT PRIMARY KEY AUTO_INCREMENT,
 //    product_id INT NOT NULL,
 //    category_id INT NOT NULL,

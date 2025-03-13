@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="en" xmlns:th="https://www.thymeleaf.com" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"
+            integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css"
+          integrity="sha512-3pIirOrwegjM6erE5gPSwkUzO+3cTjpnV9lexlNZqvupR64iZBnOOTiiLPb9M36zpMScbmUNIcHUqKD47M719g=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+
+    <title>Products Page</title>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">Add products</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container category-form mt-4">
+    <div class="form-title h4">Product Details</div>
+    <form>
+        <div class="row mb-3">
+            <div class="col-md-6" id="categorySelect">
+                <label class="form-label">Categories</label>
+                <select class="form-control">
+                    <!--<option selected>Select</option>
+                     <option>Fruits</option>
+                     <option>Cloths</option>
+                     <option>Cosmetics</option>-->
+                </select>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <input type="file" id="image" onchange="imageFile()">
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="name" class="form-label">Name</label>
+                <input type="text" class="form-control" id="name">
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="description" class="form-label">Description</label>
+                <input type="text" class="form-control" id="description">
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="price" class="form-label">Price</label>
+                <input type="number" class="form-control" id="price">
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="stock" class="form-label">Stock</label>
+                <input type="number" class="form-control" id="stock">
+            </div>
+        </div>
+        <div class="text-center">
+            <button type="submit" class="submit  btn btn-primary">Submit</button>
+        </div>
+    </form>
+</div>
+
+</body>
+<script>
+    $(document).ready(function () {
+        toastr.success('Welcome to this page');
+        getAllCategory();
+
+        $(".submit").click(function (event) {
+            event.preventDefault();
+        //    imageFile();
+            let validationOK = submitCategory();
+            if (validationOK) {
+                toastr.success('Successfully submitted');
+            }
+            /* let requestBody=  {
+                    "name": null,
+                    "parentId": null
+                }
+                let isParent = $("#isParent").is(":checked");
+                let category = $("#category").val();
+                let categorySelected = $("#categorySelect select :selected").val();
+                if (isParent) {
+                    requestBody.isParent = null;
+                    requestBody.name = category;
+                } else {
+                    requestBody.name = category;
+                    requestBody.parentId=categorySelected;
+                    //requestBody.parentId = null;
+                }
+
+                var settings = {
+                    "url": "http://localhost:8088/Categories/create",
+                    "method": "POST",
+                    "timeout": 0,
+                    "headers": {
+                        "Content-Type": "application/json"
+                    },
+                    "data": JSON.stringify(requestBody),
+                };
+
+                $.ajax(settings).done(function (response) {
+                    console.log(response);
+                    toastr.success(response.message)
+                    location.reload();
+                });
+
+            };
+        });*/
+
+
+        });
+    });
+
+    function submitCategory() {
+        let categorySelected = $("#categorySelect select").val();
+        let name = $("#name").val();
+        let description = $("#description").val();
+        let price = $("#price").val();
+        let stock = $("#stock").val();
+
+
+        if (!categorySelected || categorySelected === 'Select') {
+            toastr.error("Categories is required.");
+            return false;
+        }
+
+        const image = document.getElementById('image');
+        const file = image.files[0];
+
+
+        if (!file) {
+            toastr.error("No file selected!");
+            return;
+        }
+        const validTypes = ['image/jpeg', 'image/png', 'image/gif'];
+        if (!validTypes.includes(file.type)) {
+            toastr.error("Invalid file type! Please select an image file.");
+        }
+
+        if (name === undefined || name === '' || name.trim() === '') {
+            toastr.error("Name is required.")
+            return false;
+        }
+        if (description === undefined || description === '' || description.trim() === '') {
+            toastr.error("Description is required.")
+            return false;
+        }
+        if (price === undefined || price === '' || price.trim() === '') {
+            toastr.error("Price is required.")
+            return false;
+        }
+        if (stock === undefined || stock === '' || stock.trim() === '') {
+            toastr.error("Stock is required.")
+            return false;
+        }
+        return true;
+    }
+
+    function getAllCategory() {
+
+        var settings = {
+            "url": "http://localhost:8088/Categories/getAll",
+            "method": "GET",
+            "timeout": 0,
+        };
+
+        $.ajax(settings).done(function (response) {
+            console.log(response);
+            // console.log(response);
+            $("#categorySelect select").append(`<option selected>Select</option>`)
+            response.content.forEach(current => {
+                $("#categorySelect select").append(`
+                    <option value="` + current.id + `">` + current.name + `</option>
+                `);
+            })
+
+        });
+    }
+
+/*
+    function imageFile() {
+        const image = document.getElementById('image');
+        const file = image.files[0];
+
+        if (!file) {
+            toastr.error("No file selected!");
+            return;
+        }
+
+        const validTypes = ['image/jpeg', 'image/png', 'image/gif'];
+        const maxSize = 2 * 1024 * 1024;
+
+        if (!validTypes.includes(file.type)) {
+            toastr.error("Invalid file type! Please select an image file.");
+        } else if (file.size > maxSize) {
+            toastr.error("File size exceeds 2MB limit!");
+        } else {
+            toastr.success("File is valid!");
+        }
+    }
+*/
+
+
+</script>
+</html>

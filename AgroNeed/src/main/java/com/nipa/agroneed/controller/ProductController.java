@@ -1,6 +1,5 @@
 package com.nipa.agroneed.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nipa.agroneed.dto.Response;
 import com.nipa.agroneed.dto.SelectedProductsDto;
@@ -23,13 +22,15 @@ public class ProductController {
         this.productsService = productsService;
     }
 
-    @PostMapping(path = UrlConstraint.Products.CREATE,consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public Response uploadProducts(@RequestPart("file") MultipartFile file,
-                                   @RequestParam("data") String selectedProductsDto)
+    @PostMapping(path = UrlConstraint.Products.CREATE,
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public Response addProducts(@RequestPart("file") MultipartFile file,
+                                @RequestParam("data") String selectedProductsDto)
             throws IOException {
 
         ObjectMapper objectMapper = new ObjectMapper();
         SelectedProductsDto data = objectMapper.readValue(selectedProductsDto, SelectedProductsDto.class);
-        return productsService.addProducts(file,data);
+        return productsService.addProducts(file, data);
     }
 }

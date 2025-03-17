@@ -27,6 +27,7 @@ public class ProductsServiceImpl implements ProductsService {
     private final CategoriesRepository categoriesRepository;
     private final ProductsCategoriesRepository productsCategoriesRepository;
 
+
     @Value("${file.upload-dir}")
     private String imageStoreLocation;
 
@@ -38,7 +39,6 @@ public class ProductsServiceImpl implements ProductsService {
 
     @Override
     public Response addProducts(MultipartFile file, SelectedProductsDto selectedProductsDto) throws IOException {
-        // Define directory path
         String directoryPath = new File(imageStoreLocation).getAbsolutePath();
         File dir = new File(directoryPath);
 

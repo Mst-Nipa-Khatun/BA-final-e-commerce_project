@@ -54,7 +54,7 @@
         </div>
         <div class="row mb-3">
             <div class="col-md-6">
-                <input type="file" id="image" onchange="imageFile()">
+                <input type="file" id="image">
             </div>
         </div>
         <div class="row mb-3">
@@ -88,58 +88,75 @@
 </div>
 
 </body>
-<script>
+<script defer>
     $(document).ready(function () {
         toastr.success('Welcome to this page');
         getAllCategory();
 
         $(".submit").click(function (event) {
             event.preventDefault();
-        //    imageFile();
-            let validationOK = submitCategory();
+            //    imageFile();
+            let validationOK = submitCategoryValidation();
             if (validationOK) {
-                toastr.success('Successfully submitted');
-            }
-            /* let requestBody=  {
-                    "name": null,
-                    "parentId": null
-                }
-                let isParent = $("#isParent").is(":checked");
-                let category = $("#category").val();
-                let categorySelected = $("#categorySelect select :selected").val();
-                if (isParent) {
-                    requestBody.isParent = null;
-                    requestBody.name = category;
-                } else {
-                    requestBody.name = category;
-                    requestBody.parentId=categorySelected;
-                    //requestBody.parentId = null;
-                }
+                let categorySelected = $("#categorySelect select").val();
+                let name = $("#name").val();
+                let description = $("#description").val();
+                let price = $("#price").val();
+                let stock = $("#stock").val();
+
+                const image = document.getElementById('image');
+                const file = image.files[0];
+                let requestData = `{
+                    "selectedCategoryId": ` + categorySelected + `,
+                    "name": "` + name + `",
+                    "description": "` + description + `",
+                    "price": ` + price + ` ,
+                    "stock": ` + stock + `
+                }`;
+
+                var form = new FormData();
+                form.append("file", file);
+                form.append("data", requestData);
 
                 var settings = {
-                    "url": "http://localhost:8088/Categories/create",
+                    "url": "http://localhost:8082/Products/create",
                     "method": "POST",
                     "timeout": 0,
+                    "processData": false,
+                    "mimeType": "multipart/form-data",// Tell the server we provide multipart request
+                    "contentType": false,
+                    // Expect JSON response
+                    "dataType": "json",
                     "headers": {
-                        "Content-Type": "application/json"
+                        "Accept": "application/json"  // Tell the server we expect JSON response
                     },
-                    "data": JSON.stringify(requestBody),
+                    "data": form
                 };
 
                 $.ajax(settings).done(function (response) {
                     console.log(response);
-                    toastr.success(response.message)
-                    location.reload();
+                    toastr.success(response.message);
+                    //location.reload();
+                }).fail(function (jqXHR, textStatus, errorThrown) {
+                    console.error("AJAX Error:", textStatus, errorThrown);
+                    console.error("Response Text:", jqXHR.responseText);
+
+                    let errorMessage = "An error occurred. Please try again.";
+
+                    // Try to parse the error message if the response contains JSON
+                    if (jqXHR.responseJSON && jqXHR.responseJSON.message) {
+                        errorMessage = jqXHR.responseJSON.message;
+                    } else if (jqXHR.responseText) {
+                        errorMessage = jqXHR.responseText;
+                    }
+
+                    toastr.error(errorMessage);
                 });
-
-            };
-        });*/
-
-
+            }
         });
     });
 
-    function submitCategory() {
+    function submitCategoryValidation() {
         let categorySelected = $("#categorySelect select").val();
         let name = $("#name").val();
         let description = $("#description").val();
@@ -187,7 +204,7 @@
     function getAllCategory() {
 
         var settings = {
-            "url": "http://localhost:8088/Categories/getAll",
+            "url": "http://localhost:8082/Categories/getAll",
             "method": "GET",
             "timeout": 0,
         };
@@ -205,28 +222,28 @@
         });
     }
 
-/*
-    function imageFile() {
-        const image = document.getElementById('image');
-        const file = image.files[0];
+    /*
+        function imageFile() {
+            const image = document.getElementById('image');
+            const file = image.files[0];
 
-        if (!file) {
-            toastr.error("No file selected!");
-            return;
+            if (!file) {
+                toastr.error("No file selected!");
+                return;
+            }
+
+            const validTypes = ['image/jpeg', 'image/png', 'image/gif'];
+            const maxSize = 2 * 1024 * 1024;
+
+            if (!validTypes.includes(file.type)) {
+                toastr.error("Invalid file type! Please select an image file.");
+            } else if (file.size > maxSize) {
+                toastr.error("File size exceeds 2MB limit!");
+            } else {
+                toastr.success("File is valid!");
+            }
         }
-
-        const validTypes = ['image/jpeg', 'image/png', 'image/gif'];
-        const maxSize = 2 * 1024 * 1024;
-
-        if (!validTypes.includes(file.type)) {
-            toastr.error("Invalid file type! Please select an image file.");
-        } else if (file.size > maxSize) {
-            toastr.error("File size exceeds 2MB limit!");
-        } else {
-            toastr.success("File is valid!");
-        }
-    }
-*/
+    */
 
 
 </script>

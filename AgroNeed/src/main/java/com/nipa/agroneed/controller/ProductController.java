@@ -13,11 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(UrlConstraint.Products.ROOT)
 
 public class ProductController {
-
-    //product er  Creation API korte hoeb okhane seletecd categorioes dto thakeb with image url requestbody te thakbr
-    //ei image er akhond db te empty prbe pore dynamically url porbe,
-    //db te data okhon jabe same vabei productid and categories id o porbe
-
     private final ProductsService productsService;
 
 

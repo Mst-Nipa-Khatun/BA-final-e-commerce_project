@@ -51,7 +51,6 @@ public class ProductsServiceImpl implements ProductsService {
             productsCategoriesRepository.save(productCategoriesEntity);
             return ResponseBuilder.getSuccessResponse(HttpStatus.CREATED, null,
                     "Successfully added products");
-
         }
         return ResponseBuilder.getFailResponse(HttpStatus.BAD_REQUEST, null, "Product already exists");
     }

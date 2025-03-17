@@ -151,7 +151,7 @@
 
         $.ajax(settings).done(function (response) {
             console.log(response);
-            //toastr.success(response.message);
+            toastr.success(response.message);
             console.log(response);
             $("#categorySelect select").append(`<option selected>Select</option>`)
             response.content.forEach(current=>{

@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface CategoriesRepo extends JpaRepository<CategoriesEntity,Long> {
+public interface CategoriesRepository extends JpaRepository<CategoriesEntity,Long> {
 
     CategoriesEntity findByNameAndStatus(String name,Integer status);
     CategoriesEntity findByIdAndStatus(Long id,Integer status);

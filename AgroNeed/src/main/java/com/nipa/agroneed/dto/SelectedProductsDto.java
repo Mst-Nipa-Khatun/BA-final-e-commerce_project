@@ -9,5 +9,4 @@ public class SelectedProductsDto {
     private String description;
     private Double price;
     private Integer stock;
-    private String imageUrl;
 }

@@ -1,13 +1,16 @@
 package com.nipa.agroneed.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nipa.agroneed.dto.Response;
 import com.nipa.agroneed.dto.SelectedProductsDto;
 import com.nipa.agroneed.service.ProductsService;
 import com.nipa.agroneed.utils.UrlConstraint;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @RestController
 @RequestMapping(UrlConstraint.Products.ROOT)
@@ -19,8 +22,14 @@ public class ProductController {
     public ProductController(ProductsService productsService) {
         this.productsService = productsService;
     }
-    @PostMapping(UrlConstraint.Products.CREATE)
-    public Response addProducts(@RequestBody SelectedProductsDto selectedProductsDto){
-        return productsService.addProducts(selectedProductsDto);
+
+    @PostMapping(path = UrlConstraint.Products.CREATE,consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public Response uploadProducts(@RequestPart("file") MultipartFile file,
+                                   @RequestParam("data") String selectedProductsDto)
+            throws IOException {
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        SelectedProductsDto data = objectMapper.readValue(selectedProductsDto, SelectedProductsDto.class);
+        return productsService.addProducts(file,data);
     }
 }

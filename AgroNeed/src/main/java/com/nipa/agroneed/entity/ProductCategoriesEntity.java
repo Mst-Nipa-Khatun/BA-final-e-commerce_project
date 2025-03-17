@@ -8,11 +8,11 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "product_categories")
-public class ProductCategories extends BaseEntity{
+public class ProductCategoriesEntity extends BaseEntity{
     @Column(name = "product_id")
-    private Integer productId;
+    private Long productId;
     @Column(name = "category_id")
-    private Integer categoryId;
+    private Long categoryId;
 
 
 //    id INT PRIMARY KEY AUTO_INCREMENT,

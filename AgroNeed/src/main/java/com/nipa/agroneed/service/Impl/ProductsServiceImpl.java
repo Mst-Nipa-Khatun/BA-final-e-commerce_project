@@ -51,14 +51,14 @@ public class ProductsServiceImpl implements ProductsService {
         }
 
         // Define file path
-        String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+        String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename()
+                .replace(" ","");
         String filePath = directoryPath + "/" + fileName;
         Path path = Paths.get(filePath);
 
         // Save file to disk
         Files.write(path, file.getBytes());
 
-        String storedFileLocation = imageStoreLocation + "/" + fileName;
 
 
 
@@ -74,7 +74,7 @@ public class ProductsServiceImpl implements ProductsService {
             products.setPrice(selectedProductsDto.getPrice());
             products.setStatus(1);
             products.setStock(selectedProductsDto.getStock());
-            products.setImageUrl(storedFileLocation);
+            products.setImageUrl("/image/"+fileName);
             ProductsEntity savedProducts = productsRepository.save(products);
 
 

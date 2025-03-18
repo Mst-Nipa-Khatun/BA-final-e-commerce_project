@@ -14,63 +14,9 @@
     <div class="container category-form mt-4">
         <div class="form-title h4">All Products</div>
         <form>
-            <div class="row">
-
-                <div class="col-md-3">
-                    <div class="card" style="width: 18rem;">
-                        <img src="images/Mens Cloths.jpg" class="card-img-top" alt="...">
-                        <div class="card-body1">
-                            <h5 class="card-title">Men Cloths</h5>
-                            <p class="card-description">This product made by Bangladesh.</p>
-                            <p class="card-price">BDT 500</p>
-                            <p class="card-stock">20</p>
-                            <a href="#" class="btn btn-primary">View details</a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-3">
-                    <div class="card" style="width: 18rem;">
-                        <img src="images/Mens Cloths.jpg" class="card-img-top" alt="...">
-                        <div class="card-body2">
-                            <h5 class="card-title">Men Cloths</h5>
-                            <p class="card-description">This product made by Bangladesh.</p>
-                            <p class="card-price">BDT 500</p>
-                            <p class="card-stock">20</p>
-                            <a href="#" class="btn btn-primary">View details</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="card" style="width: 18rem;">
-                        <img src="images/Mens Cloths.jpg" class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <h5 class="card-title">Men Cloths</h5>
-                            <p class="card-description">This product made by Bangladesh.</p>
-                            <p class="card-price">BDT 500</p>
-                            <p class="card-stock">20</p>
-                            <a href="#" class="btn btn-primary">View details</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="card" style="width: 18rem;">
-                        <img src="images/Mens Cloths.jpg" class="card-img-top" alt="...">
-                        <div class="card-body3">
-                            <h5 class="card-name">Men Cloths</h5>
-                            <p class="card-description">This product made by Bangladesh.</p>
-                            <p class="card-price">BDT 500</p>
-                            <p class="card-stock">20</p>
-                            <a href="#" class="btn btn-primary">View details</a>
-                        </div>
-                    </div>
-                </div>
-
+            <div id="productsList" class="row">
+           <!--  Products List added from API dynamically  -->
             </div>
-
-            <!--<div class="text-center">
-                <button type="submit" class="submit  btn btn-primary">Submit</button>
-            </div>-->
         </form>
     </div>
 </div>
@@ -94,9 +40,23 @@
         $.ajax(settings).done(function (response) {
             console.log(response);
             //toastr.success(response.message);
-            $(".card").append(` `)
             response.content.forEach(current => {
-                //todo
+
+                let productCard=`<div class="col-md-3">
+                    <div class="col">
+                        <div class="card h-100 shadow">
+                            <img height="200px" width="200px" src="`+current.imageUrl+`" class="card-img-top" alt="Product 1">
+                            <div class="card-body text-center">
+                                <h5 class="card-title name">`+current.name+`</h5><br>
+                                <p class="text-muted description">`+current.description+`</p>
+                                <p class="text-muted price">$`+current.price+`</p>
+                                <p class="text-muted stock">`+current.stock+`</p>
+                                <button class="btn btn-primary w-100">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>`
+                $("#productsList").append(productCard);
             });
 
         }).fail(function (jqXHR, textStatus, errorThrown) {

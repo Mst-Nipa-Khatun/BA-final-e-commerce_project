@@ -1,74 +1,54 @@
 <!doctype html>
-<html lang="en" xmlns:th="https://www.thymeleaf.com">
+<html layout:decorate="~{shared/layout}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
-          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="./css/style.css">
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-
-    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"
-            integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw=="
-            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css"
-          integrity="sha512-3pIirOrwegjM6erE5gPSwkUzO+3cTjpnV9lexlNZqvupR64iZBnOOTiiLPb9M36zpMScbmUNIcHUqKD47M719g=="
-          crossorigin="anonymous" referrerpolicy="no-referrer"/>
-
-    <title>Category Page</title>
+    <title>Add Category</title>
 </head>
 <body>
-
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" href="#">AgroNeed</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-                <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
-            </li>
-        </ul>
-    </div>
-</nav>
-
-<div class="container category-form mt-4">
-    <div class="form-title h4">Category Details</div>
-    <form>
-        <div class="mb-3 form-check">
-            <input type="checkbox" class="form-check-input" id="isParent">
-            <label class="form-check-label" for="isParent">Is this Parent Category?</label>
-        </div>
-        <div class="row mb-3">
-            <div class="col-md-6">
-                <label for="category" class="form-label">Category</label>
-                <input type="text" class="form-control" id="category" placeholder="Category Name">
+<div layout:fragment="content">
+    <div class="container category-form mt-4">
+        <div class="form-title h4">Category Details</div>
+        <form>
+            <div class="mb-3 form-check">
+                <input type="checkbox" class="form-check-input" id="isParent">
+                <label class="form-check-label" for="isParent">Is this Parent Category?</label>
             </div>
-            <div class="col-md-6" id="categorySelect">
-                <label class="form-label">Categories</label>
+
+            <div class="col-md-12 mb-3" id="categorySelect">
+                <label class="form-label">Parent Category</label>
                 <select class="form-control">
-                   <!--
-                    <option>Fruits</option>
-                    <option>Cloths</option>
-                    <option>Cosmetics</option>-->
+                    <!--
+                     <option>Fruits</option>
+                     <option>Cloths</option>
+                     <option>Cosmetics</option>-->
                 </select>
             </div>
-        </div>
-        <div class="text-center">
-            <button type="submit" class="submit  btn btn-primary">Submit</button>
-        </div>
-    </form>
+
+            <div class="row mb-3">
+                <div class="col-md-12">
+                    <label for="category" class="form-label">Category</label>
+                    <input type="text" class="form-control" id="category" placeholder="Category Name">
+                </div>
+            </div>
+            <div class="text-center">
+                <button type="submit" class="submit  btn btn-primary">Submit</button>
+            </div>
+        </form>
+    </div>
 </div>
+</body>
+</html>
+
 
 <script defer>
     $(document).ready(function () {
-       // toastr.success('Welcome to this page');
+        //toastr.success('Welcome to this page');
         getAllCategory();
 
 
@@ -84,12 +64,12 @@
         $(".submit").click(function (event) {
             event.preventDefault();
 
-            let validationOK = submitCategory();
+            let validationOK = submitCategoryValidation();
             if (validationOK) {
-              let requestBody=  {
+                let requestBody=  {
                     "name": null,
                     "parentId": null
-              }
+                }
                 let isParent = $("#isParent").is(":checked");
                 let category = $("#category").val();
                 let categorySelected = $("#categorySelect select :selected").val();
@@ -103,7 +83,7 @@
                 }
 
                 var settings = {
-                    "url": "http://localhost:8082/Categories/create",
+                    "url": STRINGS.API_BASE_URL+"/Categories/create",
                     "method": "POST",
                     "timeout": 0,
                     "headers": {
@@ -115,14 +95,15 @@
                 $.ajax(settings).done(function (response) {
                     console.log(response);
                     toastr.success(response.message)
-                    location.reload();
+                    //location.reload();
+                    getAllCategory();
                 });
 
             };
         });
     });
 
-    function submitCategory() {
+    function submitCategoryValidation() {
         let isParent = $("#isParent").is(":checked");
         let category = $("#category").val();
         let categorySelected = $("#categorySelect select").val();
@@ -144,15 +125,16 @@
     function getAllCategory(){
 
         var settings = {
-            "url": "http://localhost:8082/Categories/getAll",
+            "url": STRINGS.API_BASE_URL+"/Categories/getAll",
             "method": "GET",
             "timeout": 0,
         };
 
         $.ajax(settings).done(function (response) {
             console.log(response);
-            toastr.success(response.message);
+            //toastr.success(response.message);
             console.log(response);
+            $("#categorySelect select").empty();
             $("#categorySelect select").append(`<option selected>Select</option>`)
             response.content.forEach(current=>{
                 $("#categorySelect select").append(`
@@ -164,6 +146,3 @@
     }
 
 </script>
-
-</body>
-</html>

@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-
+@CrossOrigin(origins = "*",
+        methods = {RequestMethod.GET, RequestMethod.PUT, RequestMethod.POST,
+                RequestMethod.DELETE, RequestMethod.OPTIONS})
 @RestController
 @RequestMapping(UrlConstraint.Products.ROOT)
 

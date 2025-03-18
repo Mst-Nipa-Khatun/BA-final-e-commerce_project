@@ -1,0 +1,119 @@
+<!doctype html>
+<html layout:decorate="~{shared/layout}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>View All Products</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="container category-form mt-4">
+        <div class="form-title h4">All Products</div>
+        <form>
+            <div class="row">
+
+                <div class="col-md-3">
+                    <div class="card" style="width: 18rem;">
+                        <img src="images/Mens Cloths.jpg" class="card-img-top" alt="...">
+                        <div class="card-body1">
+                            <h5 class="card-title">Men Cloths</h5>
+                            <p class="card-description">This product made by Bangladesh.</p>
+                            <p class="card-price">BDT 500</p>
+                            <p class="card-stock">20</p>
+                            <a href="#" class="btn btn-primary">View details</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="card" style="width: 18rem;">
+                        <img src="images/Mens Cloths.jpg" class="card-img-top" alt="...">
+                        <div class="card-body2">
+                            <h5 class="card-title">Men Cloths</h5>
+                            <p class="card-description">This product made by Bangladesh.</p>
+                            <p class="card-price">BDT 500</p>
+                            <p class="card-stock">20</p>
+                            <a href="#" class="btn btn-primary">View details</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card" style="width: 18rem;">
+                        <img src="images/Mens Cloths.jpg" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">Men Cloths</h5>
+                            <p class="card-description">This product made by Bangladesh.</p>
+                            <p class="card-price">BDT 500</p>
+                            <p class="card-stock">20</p>
+                            <a href="#" class="btn btn-primary">View details</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card" style="width: 18rem;">
+                        <img src="images/Mens Cloths.jpg" class="card-img-top" alt="...">
+                        <div class="card-body3">
+                            <h5 class="card-name">Men Cloths</h5>
+                            <p class="card-description">This product made by Bangladesh.</p>
+                            <p class="card-price">BDT 500</p>
+                            <p class="card-stock">20</p>
+                            <a href="#" class="btn btn-primary">View details</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!--<div class="text-center">
+                <button type="submit" class="submit  btn btn-primary">Submit</button>
+            </div>-->
+        </form>
+    </div>
+</div>
+</body>
+</html>
+<script>
+    $(document).ready(function () {
+        //toastr.success('Welcome to this page');
+        getAllProducts();
+
+    });
+
+    function getAllProducts() {
+
+        var settings = {
+            "url": STRINGS.API_BASE_URL + "/Products/getAll",
+            "method": "GET",
+            "timeout": 0,
+        };
+
+        $.ajax(settings).done(function (response) {
+            console.log(response);
+            //toastr.success(response.message);
+            $(".card").append(` `)
+            response.content.forEach(current => {
+                //todo
+            });
+
+        }).fail(function (jqXHR, textStatus, errorThrown) {
+            console.error("AJAX Error:", textStatus, errorThrown);
+            console.error("Response Text:", jqXHR.responseText);
+
+            let errorMessage = "An error occurred. Please try again.";
+
+            // Try to parse the error message if the response contains JSON
+            if (jqXHR.responseJSON && jqXHR.responseJSON.message) {
+                errorMessage = jqXHR.responseJSON.message;
+            } else if (jqXHR.responseText) {
+                errorMessage = jqXHR.responseText;
+            }
+            toastr.error(errorMessage);
+        });
+    }
+
+</script>
+

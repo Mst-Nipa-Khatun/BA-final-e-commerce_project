@@ -1,17 +1,11 @@
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f8f9fa;
-    margin: 20px;
-}
-
 .category-form {
     max-width: 800px;
     margin: auto;
     padding: 20px;
-    background: #fff;
+    /*background: #fff;*/
     border: 1px solid #ddd;
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    /*box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);*/
 }
 
 .form-title {

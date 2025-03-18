@@ -1,93 +1,68 @@
-<!doctype html>
-<html lang="en" xmlns:th="https://www.thymeleaf.com" xmlns="http://www.w3.org/1999/html">
+<!DOCTYPE html>
+<html layout:decorate="~{shared/layout}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
-          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <title>Add Product</title>
     <link rel="stylesheet" href="./css/style.css">
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-
-    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"
-            integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw=="
-            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css"
-          integrity="sha512-3pIirOrwegjM6erE5gPSwkUzO+3cTjpnV9lexlNZqvupR64iZBnOOTiiLPb9M36zpMScbmUNIcHUqKD47M719g=="
-          crossorigin="anonymous" referrerpolicy="no-referrer"/>
-
-    <title>Products Page</title>
 </head>
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" href="#">Add products</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-                <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
-            </li>
-        </ul>
+<div layout:fragment="content">
+    <div class="container category-form mt-4">
+        <div class="form-title h4">Add Product</div>
+        <form>
+            <div class="row mb-3">
+                <div class="col-md-6" id="categorySelect">
+                    <label class="form-label">Category</label>
+                    <select class="form-control">
+                        <!--<option selected>Select</option>
+                         <option>Fruits</option>
+                         <option>Cloths</option>
+                         <option>Cosmetics</option>-->
+                    </select>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <input type="file" id="image">
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="name" class="form-label">Name</label>
+                    <input type="text" class="form-control" id="name">
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="description" class="form-label">Description</label>
+                    <input type="text" class="form-control" id="description">
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="price" class="form-label">Price</label>
+                    <input type="number" class="form-control" id="price">
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="stock" class="form-label">Stock</label>
+                    <input type="number" class="form-control" id="stock">
+                </div>
+            </div>
+            <div class="text-center">
+                <button type="submit" class="submit  btn btn-primary">Submit</button>
+            </div>
+        </form>
     </div>
-</nav>
-
-<div class="container category-form mt-4">
-    <div class="form-title h4">Add Product</div>
-    <form>
-        <div class="row mb-3">
-            <div class="col-md-6" id="categorySelect">
-                <label class="form-label">Category</label>
-                <select class="form-control">
-                    <!--<option selected>Select</option>
-                     <option>Fruits</option>
-                     <option>Cloths</option>
-                     <option>Cosmetics</option>-->
-                </select>
-            </div>
-        </div>
-        <div class="row mb-3">
-            <div class="col-md-6">
-                <input type="file" id="image">
-            </div>
-        </div>
-        <div class="row mb-3">
-            <div class="col-md-6">
-                <label for="name" class="form-label">Name</label>
-                <input type="text" class="form-control" id="name">
-            </div>
-        </div>
-        <div class="row mb-3">
-            <div class="col-md-6">
-                <label for="description" class="form-label">Description</label>
-                <input type="text" class="form-control" id="description">
-            </div>
-        </div>
-        <div class="row mb-3">
-            <div class="col-md-6">
-                <label for="price" class="form-label">Price</label>
-                <input type="number" class="form-control" id="price">
-            </div>
-        </div>
-        <div class="row mb-3">
-            <div class="col-md-6">
-                <label for="stock" class="form-label">Stock</label>
-                <input type="number" class="form-control" id="stock">
-            </div>
-        </div>
-        <div class="text-center">
-            <button type="submit" class="submit  btn btn-primary">Submit</button>
-        </div>
-    </form>
 </div>
 
 </body>
+</html>
+
 <script defer>
     $(document).ready(function () {
         toastr.success('Welcome to this page');
@@ -119,7 +94,7 @@
                 form.append("data", requestData);
 
                 var settings = {
-                    "url": "http://localhost:8082/Products/create",
+                    "url": STRINGS.API_BASE_URL+"/Products/create",
                     "method": "POST",
                     "timeout": 0,
                     "processData": false,
@@ -204,7 +179,7 @@
     function getAllCategory() {
 
         var settings = {
-            "url": "http://localhost:8082/Categories/getAll",
+            "url": STRINGS.API_BASE_URL+"/Categories/getAll",
             "method": "GET",
             "timeout": 0,
         };
@@ -216,35 +191,11 @@
             response.content.forEach(current => {
                 $("#categorySelect select").append(`
                     <option value="` + current.id + `">` + current.name + `</option>
+
                 `);
             })
 
         });
     }
 
-    /*
-        function imageFile() {
-            const image = document.getElementById('image');
-            const file = image.files[0];
-
-            if (!file) {
-                toastr.error("No file selected!");
-                return;
-            }
-
-            const validTypes = ['image/jpeg', 'image/png', 'image/gif'];
-            const maxSize = 2 * 1024 * 1024;
-
-            if (!validTypes.includes(file.type)) {
-                toastr.error("Invalid file type! Please select an image file.");
-            } else if (file.size > maxSize) {
-                toastr.error("File size exceeds 2MB limit!");
-            } else {
-                toastr.success("File is valid!");
-            }
-        }
-    */
-
-
 </script>
-</html>

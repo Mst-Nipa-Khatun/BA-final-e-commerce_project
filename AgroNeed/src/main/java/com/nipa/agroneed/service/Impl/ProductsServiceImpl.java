@@ -96,20 +96,5 @@ public class ProductsServiceImpl implements ProductsService {
             return ResponseBuilder.getSuccessResponse(HttpStatus.OK,productsList,"Successfully retrieved products");
         }
         return ResponseBuilder.getFailResponse(HttpStatus.BAD_REQUEST, null, "No products found");
-
-        /*if(!productsList.isEmpty()) {
-            List<SelectedProductsDto> selectedProductsDtoList=new ArrayList<>();
-            for(ProductsEntity productsEntity:productsList) {
-                SelectedProductsDto selectedProductsDto=new SelectedProductsDto();
-               // selectedProductsDto.setSelectedCategoryId(productsEntity.getId());
-                selectedProductsDto.setName(productsEntity.getName());
-                selectedProductsDto.setDescription(productsEntity.getDescription());
-                selectedProductsDto.setPrice(productsEntity.getPrice());
-                selectedProductsDto.setStock(productsEntity.getStock());
-                selectedProductsDtoList.add(selectedProductsDto);
-            }
-            return ResponseBuilder.getSuccessResponse(HttpStatus.OK,selectedProductsDtoList,"Successfully Retrive all products");
-        }
-        return ResponseBuilder.getFailResponse(HttpStatus.BAD_REQUEST, null, "No products found");*/
     }
 }

@@ -1,4 +1,4 @@
-package com.nipa.agroneed.controller;
+package com.nipa.agroneed.controller.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nipa.agroneed.dto.Response;

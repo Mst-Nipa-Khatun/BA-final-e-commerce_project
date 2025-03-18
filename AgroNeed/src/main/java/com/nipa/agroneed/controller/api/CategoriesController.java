@@ -1,4 +1,4 @@
-package com.nipa.agroneed.controller;
+package com.nipa.agroneed.controller.api;
 
 
 import com.nipa.agroneed.dto.CategoriesDto;

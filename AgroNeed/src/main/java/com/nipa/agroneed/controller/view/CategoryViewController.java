@@ -1,4 +1,4 @@
-package com.nipa.agroneed.controller;
+package com.nipa.agroneed.controller.view;
 
 
 import com.nipa.agroneed.service.CategoriesService;

@@ -8,4 +8,5 @@ import java.io.IOException;
 
 public interface ProductsService {
     Response addProducts(MultipartFile file, SelectedProductsDto selectedProductsDto) throws IOException;
+    Response getAllProducts();
 }

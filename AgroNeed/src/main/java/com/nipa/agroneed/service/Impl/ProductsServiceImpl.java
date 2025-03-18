@@ -2,6 +2,7 @@ package com.nipa.agroneed.service.Impl;
 
 import com.nipa.agroneed.dto.Response;
 import com.nipa.agroneed.dto.SelectedProductsDto;
+import com.nipa.agroneed.dto.ViewProductsDetailsProjection;
 import com.nipa.agroneed.entity.CategoriesEntity;
 import com.nipa.agroneed.entity.ProductCategoriesEntity;
 import com.nipa.agroneed.entity.ProductsEntity;
@@ -20,6 +21,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class ProductsServiceImpl implements ProductsService {
@@ -84,5 +87,29 @@ public class ProductsServiceImpl implements ProductsService {
                     "Successfully added products");
         }
         return ResponseBuilder.getFailResponse(HttpStatus.BAD_REQUEST, null, "Product already exists");
+    }
+
+    @Override
+    public Response getAllProducts() {
+        List<ViewProductsDetailsProjection> productsList=productsRepository.findByAllProducts();
+        if (!productsList.isEmpty()) {
+            return ResponseBuilder.getSuccessResponse(HttpStatus.OK,productsList,"Successfully retrieved products");
+        }
+        return ResponseBuilder.getFailResponse(HttpStatus.BAD_REQUEST, null, "No products found");
+
+        /*if(!productsList.isEmpty()) {
+            List<SelectedProductsDto> selectedProductsDtoList=new ArrayList<>();
+            for(ProductsEntity productsEntity:productsList) {
+                SelectedProductsDto selectedProductsDto=new SelectedProductsDto();
+               // selectedProductsDto.setSelectedCategoryId(productsEntity.getId());
+                selectedProductsDto.setName(productsEntity.getName());
+                selectedProductsDto.setDescription(productsEntity.getDescription());
+                selectedProductsDto.setPrice(productsEntity.getPrice());
+                selectedProductsDto.setStock(productsEntity.getStock());
+                selectedProductsDtoList.add(selectedProductsDto);
+            }
+            return ResponseBuilder.getSuccessResponse(HttpStatus.OK,selectedProductsDtoList,"Successfully Retrive all products");
+        }
+        return ResponseBuilder.getFailResponse(HttpStatus.BAD_REQUEST, null, "No products found");*/
     }
 }

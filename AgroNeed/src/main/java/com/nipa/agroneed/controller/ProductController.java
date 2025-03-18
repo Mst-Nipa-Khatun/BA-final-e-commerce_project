@@ -33,4 +33,8 @@ public class ProductController {
         SelectedProductsDto data = objectMapper.readValue(selectedProductsDto, SelectedProductsDto.class);
         return productsService.addProducts(file, data);
     }
+    @GetMapping(UrlConstraint.Products.GET_ALL)
+    public Response getAllProducts() {
+        return productsService.getAllProducts();
+    }
 }

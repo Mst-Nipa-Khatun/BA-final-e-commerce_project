@@ -5,6 +5,7 @@ import com.nipa.agroneed.dto.ProductsAndCategoryDetailsProjection;
 import com.nipa.agroneed.entity.CategoriesEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -30,6 +31,6 @@ public interface CategoriesRepository extends JpaRepository<CategoriesEntity,Lon
             "from products p\n" +
             "         join product_categories pc on p.id = pc.product_id\n" +
             "         join categories c on c.id = pc.category_id\n" +
-            "where pc.category_id = 11",nativeQuery = true)
-    List<ProductsAndCategoryDetailsProjection> findAllProductsAndCategories();
+            "where pc.category_id = :category_id",nativeQuery = true)
+    List<ProductsAndCategoryDetailsProjection> findAllProductsAndCategories(@Param("category_id") Long categoryId);
 }

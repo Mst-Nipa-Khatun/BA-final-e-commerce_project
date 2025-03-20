@@ -120,7 +120,7 @@ public class CategoriesServiceImpl implements CategoriesService {
 
     @Override
     public Response getProductsAndCategoryByCategoryId(Long categoryId) {
-        List<ProductsAndCategoryDetailsProjection> categoryDetails=categoriesRepository.findAllProductsAndCategories();
+        List<ProductsAndCategoryDetailsProjection> categoryDetails=categoriesRepository.findAllProductsAndCategories(categoryId);
         if(!categoryDetails.isEmpty()){
             return ResponseBuilder.getSuccessResponse(HttpStatus.OK, categoryDetails, "All Category found");
         }

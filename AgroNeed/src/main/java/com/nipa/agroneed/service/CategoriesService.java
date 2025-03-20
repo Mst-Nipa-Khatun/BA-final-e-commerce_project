@@ -10,6 +10,7 @@ public interface CategoriesService {
     Response getAllParentCategories();
     Response getCategoryById(Long id);
     Response getCategoryByParentId(Long parentId);
+    Response getProductsAndCategoryByCategoryId(Long categoryId);
     Response deleteCategoryById(Long id);
     Response editCategoryById(Long id, CategoriesDto categoriesDto);
 }

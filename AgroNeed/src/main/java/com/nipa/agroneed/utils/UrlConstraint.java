@@ -10,6 +10,7 @@ public final class UrlConstraint {
         public static final String GET_ALL_PARENT_CATEGORY = "/getAllParentCategory";
         public static final String GET_BY_ID = "/getById/{id}";
         public static final String GET_BY_ParentId = "/getByParentId/{parentId}";
+        public static final String GET_PRODUCTS_AND_CATEGORY_BY_CATEGORY_ID = "/getProductsAndCategoryByCategoryId/{categoryId}";
         public static final String DELETE_BY_ID = "/delete/{id}";
         public static final String EDIT_BY_ID = "/edit/{id}";
 

@@ -24,6 +24,11 @@ public class CategoriesController {
     public Response getAllCategories() {
         return categoriesService.getAllCategories();
     }
+    @GetMapping(UrlConstraint.Categories.GET_ALL_PARENT_CATEGORY)
+    public Response getAllParentCategories() {
+        return categoriesService.getAllParentCategories();
+    }
+
     @GetMapping(UrlConstraint.Categories.GET_BY_ID)
     public Response getCategoryById(@PathVariable("id") Long id) {
         return categoriesService.getCategoryById(id);
@@ -32,6 +37,7 @@ public class CategoriesController {
     public Response getCategoryByParentId(@PathVariable("parentId") Long parentId) {
         return categoriesService.getCategoryByParentId(parentId);
     }
+   // @GetMapping(UrlConstraint)
     @DeleteMapping(UrlConstraint.Categories.DELETE_BY_ID)
     public Response deleteCategoryById(@PathVariable("id") Long id) {
         return categoriesService.deleteCategoryById(id);

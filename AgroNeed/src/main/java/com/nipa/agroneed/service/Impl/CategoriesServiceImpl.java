@@ -69,6 +69,24 @@ public class CategoriesServiceImpl implements CategoriesService {
     }
 
     @Override
+    public Response getAllParentCategories() {
+        List<CategoriesEntity> categoriesEntities=categoriesRepository.findAllParentCategories();
+        if(!categoriesEntities.isEmpty()){
+            List<CategoriesDto> categoriesDtos=new ArrayList<>();
+            for (CategoriesEntity categoriesEntity : categoriesEntities) {
+                CategoriesDto categoriesDto = new CategoriesDto();
+                categoriesDto.setId(categoriesEntity.getId());
+                categoriesDto.setName(categoriesEntity.getName());
+                categoriesDto.setStatus(categoriesEntity.getStatus());
+                categoriesDtos.add(categoriesDto);
+            }
+            return ResponseBuilder.getSuccessResponse(HttpStatus.OK, categoriesDtos, " All parent Categories listed");
+
+        }
+        return ResponseBuilder.getFailResponse(HttpStatus.BAD_REQUEST, null, "No Parent categories found");
+    }
+
+    @Override
     public Response getCategoryById(Long id) {
         CategoriesEntity categories = categoriesRepository.findByIdAndStatus(id, 1);
         if (categories != null) {
@@ -83,13 +101,18 @@ public class CategoriesServiceImpl implements CategoriesService {
 
     @Override
     public Response getCategoryByParentId(Long parentId) {
-        CategoriesEntity categories = categoriesRepository.findByParentIdAndStatus(parentId, 1);
-        if (categories != null) {
-            CategoriesDto categoriesDto = new CategoriesDto();
-            categoriesDto.setName(categories.getName());
-            categoriesDto.setParentId(categories.getParentId());
-            categoriesDto.setStatus(categories.getStatus());
-            return ResponseBuilder.getSuccessResponse(HttpStatus.OK, categoriesDto, "Category found");
+        List<CategoriesEntity> categories = categoriesRepository.findByParentIdAndStatus(parentId, 1);
+        if(!categories.isEmpty()){
+            List<CategoriesDto> categoriesDtos=new ArrayList<>();
+            for (CategoriesEntity categoriesEntity : categories) {
+                CategoriesDto categoriesDto = new CategoriesDto();
+                categoriesDto.setId(categoriesEntity.getId());
+                categoriesDto.setName(categoriesEntity.getName());
+                categoriesDto.setParentId(categoriesEntity.getParentId());
+                categoriesDto.setStatus(categoriesEntity.getStatus());
+                categoriesDtos.add(categoriesDto);
+            }
+            return ResponseBuilder.getSuccessResponse(HttpStatus.OK, categoriesDtos, "Category found");
         }
         return ResponseBuilder.getFailResponse(HttpStatus.BAD_REQUEST, null, "No category found");
     }

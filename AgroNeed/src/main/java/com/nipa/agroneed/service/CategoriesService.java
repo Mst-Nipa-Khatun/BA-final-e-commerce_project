@@ -7,6 +7,7 @@ import com.nipa.agroneed.dto.Response;
 public interface CategoriesService {
     Response createCategory(CategoriesDto categoriesDto);
     Response getAllCategories();
+    Response getAllParentCategories();
     Response getCategoryById(Long id);
     Response getCategoryByParentId(Long parentId);
     Response deleteCategoryById(Long id);

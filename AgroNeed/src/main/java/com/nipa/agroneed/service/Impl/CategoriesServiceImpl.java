@@ -1,6 +1,7 @@
 package com.nipa.agroneed.service.Impl;
 
 import com.nipa.agroneed.dto.CategoriesDto;
+import com.nipa.agroneed.dto.ProductsAndCategoryDetailsProjection;
 import com.nipa.agroneed.dto.Response;
 import com.nipa.agroneed.entity.CategoriesEntity;
 import com.nipa.agroneed.repository.CategoriesRepository;
@@ -113,6 +114,15 @@ public class CategoriesServiceImpl implements CategoriesService {
                 categoriesDtos.add(categoriesDto);
             }
             return ResponseBuilder.getSuccessResponse(HttpStatus.OK, categoriesDtos, "Category found");
+        }
+        return ResponseBuilder.getFailResponse(HttpStatus.BAD_REQUEST, null, "No category found");
+    }
+
+    @Override
+    public Response getProductsAndCategoryByCategoryId(Long categoryId) {
+        List<ProductsAndCategoryDetailsProjection> categoryDetails=categoriesRepository.findAllProductsAndCategories();
+        if(!categoryDetails.isEmpty()){
+            return ResponseBuilder.getSuccessResponse(HttpStatus.OK, categoryDetails, "All Category found");
         }
         return ResponseBuilder.getFailResponse(HttpStatus.BAD_REQUEST, null, "No category found");
     }

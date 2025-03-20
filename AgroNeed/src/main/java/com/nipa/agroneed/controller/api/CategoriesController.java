@@ -37,7 +37,10 @@ public class CategoriesController {
     public Response getCategoryByParentId(@PathVariable("parentId") Long parentId) {
         return categoriesService.getCategoryByParentId(parentId);
     }
-   // @GetMapping(UrlConstraint)
+   @GetMapping(UrlConstraint.Categories.GET_PRODUCTS_AND_CATEGORY_BY_CATEGORY_ID)
+   public Response getProductsAndCategoryByCategoryId(@PathVariable("categoryId") Long categoryId) {
+        return categoriesService.getProductsAndCategoryByCategoryId(categoryId);
+   }
     @DeleteMapping(UrlConstraint.Categories.DELETE_BY_ID)
     public Response deleteCategoryById(@PathVariable("id") Long id) {
         return categoriesService.deleteCategoryById(id);

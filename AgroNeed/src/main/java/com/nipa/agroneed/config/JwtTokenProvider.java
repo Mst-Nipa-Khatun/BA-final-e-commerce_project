@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
 @Configuration
 public class JwtTokenProvider {
 
-    private static final String SECRET_KEY = "your-256-bit-secret-your-256-bit-secret"; // Must be 32+ bytes
+    private static final String SECRET_KEY = "nipa-key_nipa-key_nipa-key_nipa-key"; // Must be 32+ bytes
     private static final Key key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
 
     public boolean isValidateToken(String jwtToken, HttpServletRequest request) {

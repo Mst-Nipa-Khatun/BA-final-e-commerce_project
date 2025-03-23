@@ -20,8 +20,8 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String phone) throws UsernameNotFoundException {
-        User user = userRepository.findByPhoneAndStatus(phone,1);
-        if (user==null){
+        User user = userRepository.findByPhoneAndStatus(phone, 1);
+        if (user == null) {
             throw new UsernameNotFoundException("Phone Number Not Found");
         }
         UserPrincipal userDetails = UserPrincipal.create(user);

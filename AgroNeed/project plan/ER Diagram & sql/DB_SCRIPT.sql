@@ -1,6 +1,21 @@
 CREATE DATABASE Final_E_Commerce;
 USE Final_E_Commerce;
 
+create table role
+(
+    id        int auto_increment
+        primary key,
+    name      varchar(128) null,
+    status    int          null,
+    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    createdBy varchar(255) null,
+    updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    updatedBy varchar(255) null,
+    constraint UK4bssh5141cg7snenoxyxfch4a
+        unique (name)
+);
+
+-- auto-generated definition
 CREATE TABLE Users (
                        id INT PRIMARY KEY AUTO_INCREMENT,
                        name VARCHAR(255) NOT NULL,
@@ -9,8 +24,21 @@ CREATE TABLE Users (
                        status integer,
                        password_hash VARCHAR(255) NOT NULL,
                        address varchar(255),
-                       role ENUM('customer', 'admin') DEFAULT 'customer',
-                       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                       createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                       createdBy varchar(255) null,
+                       updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                       updatedBy varchar(255) null
+);
+
+
+create table users_role
+(
+    users_id int not null,
+    roles_id int not null,
+    constraint role_id_mapping_constraint
+        foreign key (roles_id) references role (id),
+    constraint users_id_mapping_constraint
+        foreign key (users_id) references users (id)
 );
 
 CREATE TABLE Products (
@@ -22,7 +50,10 @@ CREATE TABLE Products (
                           status integer,
                           category VARCHAR(255),
                           image_url VARCHAR(255),
-                          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                          createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                          createdBy varchar(255) null,
+                          updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                          updatedBy varchar(255) null
 );
 
 CREATE TABLE categories (
@@ -30,8 +61,10 @@ CREATE TABLE categories (
                             name VARCHAR(255) NOT NULL,
                             parent_id INT NULL,
                             status integer,
-                            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                            createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                            createdBy varchar(255) null,
+                            updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                            updatedBy varchar(255) null,
                             FOREIGN KEY (parent_id) REFERENCES categories(id) ON DELETE CASCADE
 );
 
@@ -41,6 +74,10 @@ CREATE TABLE product_categories (
                                     product_id INT NOT NULL,
                                     category_id INT NOT NULL,
                                     status integer,
+                                    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                                    createdBy varchar(255) null,
+                                    updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                                    updatedBy varchar(255) null,
                                     FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE,
                                     FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE CASCADE
 );
@@ -53,7 +90,10 @@ CREATE TABLE Orders (
                         total_price DECIMAL(10,2),
 --     status ENUM('pending', 'shipped', 'delivered', 'cancelled') DEFAULT 'pending',
                         status integer,
-                        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                        createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                        createdBy varchar(255) null,
+                        updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                        updatedBy varchar(255) null,
                         FOREIGN KEY (user_id) REFERENCES Users(id) ON DELETE CASCADE
 );
 
@@ -65,6 +105,10 @@ CREATE TABLE Order_Items (
                              quantity INT,
                              status integer,
                              price DECIMAL(10,2),
+                             createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                             createdBy varchar(255) null,
+                             updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                             updatedBy varchar(255) null,
                              FOREIGN KEY (order_id) REFERENCES Orders(id) ON DELETE CASCADE,
                              FOREIGN KEY (product_id) REFERENCES Products(id) ON DELETE CASCADE
 );
@@ -75,6 +119,10 @@ CREATE TABLE Shopping_Cart (
                                product_id INT,
                                status integer,
                                quantity INT,
+                               createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                               createdBy varchar(255) null,
+                               updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                               updatedBy varchar(255) null,
                                FOREIGN KEY (user_id) REFERENCES Users(id) ON DELETE CASCADE,
                                FOREIGN KEY (product_id) REFERENCES Products(id) ON DELETE CASCADE
 );
@@ -88,7 +136,10 @@ CREATE TABLE Payments (
                           amount DECIMAL(10,2),
 --     status ENUM('pending', 'completed', 'failed') DEFAULT 'pending',
                           status integer,
-                          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                          createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                          createdBy varchar(255) null,
+                          updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                          updatedBy varchar(255) null,
                           FOREIGN KEY (order_id) REFERENCES Orders(id) ON DELETE CASCADE,
                           FOREIGN KEY (user_id) REFERENCES Users(id) ON DELETE CASCADE
 );
@@ -101,7 +152,11 @@ CREATE TABLE Reviews (
                          status integer,
                          rating INT CHECK (rating BETWEEN 1 AND 5),
                          comment TEXT,
-                         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                         createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                         createdBy varchar(255) null,
+                         updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                         updatedBy varchar(255) null,
                          FOREIGN KEY (user_id) REFERENCES Users(id) ON DELETE CASCADE,
                          FOREIGN KEY (product_id) REFERENCES Products(id) ON DELETE CASCADE
 );
+

@@ -34,22 +34,22 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     FilterChain filterChain) throws ServletException, IOException {
 
         try {
-            String jwt = getJwtFromRequest(httpServletRequest);
-            if (StringUtils.hasText(jwt) && jwtTokenProvider.isValidateToken(jwt,httpServletRequest)) {
-                Long userId = jwtTokenProvider.getUserIdFromToken(jwt);
-                User user = userRepository.findByIdAndStatus(userId,1);
+            String jwt = getJwtFromRequest(httpServletRequest); //get jwt token from http request header
+            if (StringUtils.hasText(jwt) && jwtTokenProvider.isValidateToken(jwt,httpServletRequest)) { //first check jwt token isEmpty or not, second jwt token validate or not
+                Long userId = jwtTokenProvider.getUserIdFromToken(jwt); //if token valid then get userId from jwt token
+                User user = userRepository.findByIdAndStatus(userId,1); // also get userId base user details from database
 
                 UserDetails userDetails = customUserDetailsService.loadUserByUsername(user.getPhone());
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
 
                 //@INFO For globally set credentials over full application
-                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                SecurityContextHolder.getContext().setAuthentication(authenticationToken); //for f
 
             }
         }catch (Exception e){
 
         }
-        filterChain.doFilter(httpServletRequest, httpServletResponse);
+        filterChain.doFilter(httpServletRequest, httpServletResponse);//after jwt authenticate user can be permited for API.
 
 
     }

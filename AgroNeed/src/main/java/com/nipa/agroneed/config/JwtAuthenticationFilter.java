@@ -43,7 +43,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
 
                 //@INFO For globally set credentials over full application
-                SecurityContextHolder.getContext().setAuthentication(authenticationToken); //for f
+                SecurityContextHolder.getContext().setAuthentication(authenticationToken); //for full API
 
             }
         }catch (Exception e){
@@ -55,11 +55,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     private String getJwtFromRequest(HttpServletRequest request) {
-        String bearerToken = request.getHeader("Authorization");
+        String bearerToken = request.getHeader("Authorization"); //get authorizaytio value from http request header
         //String ip = request.getRemoteAddr();
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
-            return bearerToken.substring(7);
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) { //token hasEmprty or not and Is token start with bearer token or not?
+            return bearerToken.substring(7); //if valid substring 7 use kore first 7 character remove kora hoy.thn return jwt token
         }
-        return null;
+        return null;  // if authorization haerder not valid then return null.
     }
 }

@@ -15,7 +15,7 @@ import java.io.IOException;
 @Configuration
 //learn us how to unauthorised access can be handled.
 public class MyAuthenticationEntryPoint implements AuthenticationEntryPoint {
-    private final Logger logger = LoggerFactory.getLogger(this.getClass()); //when unauthorised access ca be access then we customs the error log.thats why we use this logger class,here we inject this class
+    private final Logger logger = LoggerFactory.getLogger(this.getClass()); //when unauthorised access can be access then we customs the error log.thats why we use this logger class,here we inject this class
     @Override
     public void commence(HttpServletRequest httpServletRequest,
                          HttpServletResponse httpServletResponse,

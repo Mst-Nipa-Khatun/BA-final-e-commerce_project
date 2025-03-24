@@ -74,7 +74,7 @@ public class ProductsServiceImpl implements ProductsService {
             products.setPrice(selectedProductsDto.getPrice());
             products.setStatus(1);
             products.setStock(selectedProductsDto.getStock());
-            products.setImageUrl("/image/"+fileName);
+            products.setImageUrl("/images/"+fileName);
             ProductsEntity savedProducts = productsRepository.save(products);
 
 

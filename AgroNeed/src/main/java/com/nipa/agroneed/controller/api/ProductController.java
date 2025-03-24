@@ -15,8 +15,9 @@ import java.io.IOException;
                 RequestMethod.DELETE, RequestMethod.OPTIONS})
 @RestController
 @RequestMapping(UrlConstraint.Products.ROOT)
-
 public class ProductController {
+
+
     private final ProductsService productsService;
 
 

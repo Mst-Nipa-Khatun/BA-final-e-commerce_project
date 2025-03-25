@@ -1,6 +1,7 @@
 package com.nipa.agroneed.controller.api;
 
 
+import com.nipa.agroneed.dto.AddRoleDto;
 import com.nipa.agroneed.dto.LoginDto;
 import com.nipa.agroneed.dto.Response;
 import com.nipa.agroneed.dto.UserDto;
@@ -31,5 +32,12 @@ public class AuthController {
     public Response register(@RequestBody UserDto userDto) {
         return authService.register(userDto);
     }
+    @PostMapping("/addRole")
+    public Response addRole(@RequestBody AddRoleDto addRoleDto) {
+        return authService.addRole(addRoleDto);
+    }
+
+
+
 
 }

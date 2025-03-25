@@ -56,7 +56,7 @@ public class SecurityConfig {
                 .exceptionHandling(ex -> ex.authenticationEntryPoint(myAuthenticationEntryPoint)) //exception handle kora hoyeche,when unauthorised user can access in API then show the message 401,403.here we creaye a custom class where we decelare
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))//In this application we use jwt thats why no nned to store any session.here stateless means every request can be checked newly,don't create any session.
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/login", "/register").permitAll() //which API canbe public here we permit theses API.In those API without others API van not be access without jwt token.
+                        .requestMatchers("/login", "/register","/addRole").permitAll() //which API canbe public here we permit theses API.In those API without others API van not be access without jwt token.
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);//added jwt token authentication filter

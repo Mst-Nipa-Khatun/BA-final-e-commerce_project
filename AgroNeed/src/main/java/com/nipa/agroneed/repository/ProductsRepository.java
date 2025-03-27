@@ -12,6 +12,7 @@ import java.util.Map;
 @Repository
 public interface ProductsRepository extends JpaRepository<ProductsEntity,Long> {
     ProductsEntity findByNameAndStatus(String name, Integer status);
+    ProductsEntity findByIdAndStatus(Long id, Integer status);
 
     List<ProductsEntity> findAllByStatus(Integer status);
 

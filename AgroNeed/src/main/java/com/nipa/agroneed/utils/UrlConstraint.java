@@ -26,4 +26,10 @@ public final class UrlConstraint {
         public static final String CREATE = "/create";
         public static final String GET_ALL = "/getAll";
     }
+    public static class ShoppingCart{
+        public static final String ROOT = "/shoppingCart";
+        public static final String CREATE = "/create";
+        public static final String GET_ALL = "/getAll";
+
+    }
 }

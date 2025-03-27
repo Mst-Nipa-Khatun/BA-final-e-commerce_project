@@ -1,3 +1,5 @@
+<th:block th:fragment="scripts">
+
 <!--CUSTOM COMMON JS FILE-->
 <script>
     window.STRINGS = {
@@ -97,9 +99,9 @@
 <!-- jQuery UI 1.11.4 -->
 <script defer src="/webjars/AdminLTE/3.2.0/plugins/jquery-ui/jquery-ui.min.js"></script>
 <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
-<script defer>
-    $.widget.bridge('uibutton', $.ui.button)
-</script>
+<!--<script defer>-->
+<!--    $.widget.bridge('uibutton', $.ui.button)-->
+<!--</script>-->
 <!-- Bootstrap 4 -->
 <script defer src="/webjars/AdminLTE/3.2.0/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- ChartJS -->
@@ -127,3 +129,4 @@
 <!-- AdminLTE for demo purposes -->
 <script defer src="/webjars/AdminLTE/3.2.0/dist/js/demo.js"></script>
 
+</th:block>

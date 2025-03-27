@@ -29,6 +29,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Response userRegister(UserDto userDto) {
+        if (userDto.getUsername() == null || userDto.getUsername().trim().isEmpty()) {
+            return ResponseBuilder.getFailResponse(HttpStatus.BAD_REQUEST, null,
+                    "Username should not be empty");
+        }
         User user = userRepository.findByPhoneAndStatus(userDto.getPhone(), 1);
         if (user != null) {
             return ResponseBuilder.getFailResponse(HttpStatus.BAD_REQUEST,

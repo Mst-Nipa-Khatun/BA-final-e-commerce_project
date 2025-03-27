@@ -17,6 +17,11 @@ public class WebPageController {
         return "login";
     }
 
+    @GetMapping("/register")
+    public String register(){
+        return "register";
+    }
+
     @RequestMapping("/contact")
     public String contact() {
         return "contact";

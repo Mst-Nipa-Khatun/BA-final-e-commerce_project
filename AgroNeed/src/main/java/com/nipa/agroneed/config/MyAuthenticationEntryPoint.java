@@ -20,7 +20,7 @@ public class MyAuthenticationEntryPoint implements AuthenticationEntryPoint {
     public void commence(HttpServletRequest httpServletRequest,
                          HttpServletResponse httpServletResponse,
                          AuthenticationException e) throws IOException, ServletException {
-        logger.error("Message: {}", e.getMessage()); //create a log
+        logger.error("\n\nURL :{}\nMessage: {}\n", httpServletRequest.getRequestURI(), e.getMessage()); //create a log
         httpServletResponse.setStatus(httpServletResponse.SC_UNAUTHORIZED); //status 401 unauthorised
         httpServletResponse.sendError(httpServletResponse.SC_UNAUTHORIZED, "Unauthorized Request");  //showing message
     }

@@ -1,132 +1,123 @@
 <!doctype html>
-<html layout:decorate="~{shared/layout}"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<!--begin::Head-->
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="../static/styles.css">
-    <title>Register Page</title>
+    <meta charset="utf-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <title>Register</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" th:href="@{~/webjars/AdminLTE/3.2.0/plugins/fontawesome-free/css/all.min.css}"
+          type="text/css">
+    <!-- Ionicons -->
+    <link href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" rel="stylesheet" type="text/css">
+    <!-- icheck bootstrap -->
+    <link rel="stylesheet" th:href="@{~/webjars/AdminLTE/3.2.0/plugins/icheck-bootstrap/icheck-bootstrap.min.css}"
+          type="text/css">
+    <!-- Theme style -->
+    <link rel="stylesheet" th:href="@{~/webjars/AdminLTE/3.2.0/dist/css/adminlte.min.css}" type="text/css">
+    <!-- Google Font: Source Sans Pro -->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet"
+          type="text/css">
 </head>
-<body>
-<div layout:fragment="content">
-    <h2>Register</h2>
-    <form action="/register" method="post">
-        <label>Username:</label>
-        <input type="text" name="username" required>
-        <label>Password:</label>
-        <input type="password" name="password" required>
-        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-        <button type="submit">Register</button>
-    </form>
-    <p th:if="${error}" th:text="${error}" style="color: red;"></p>
-    <p>Already have an account? <a href="/login">Login</a></p>
+<!--end::Head-->
+<!--begin::Body-->
+<body class="register-page bg-body-secondary">
+<div class="register-box">
+    <div class="register-logo">
+        <a href="../index2.html"><b>Admin</b>LTE</a>
+    </div>
+    <!-- /.register-logo -->
+    <div class="card">
+        <div class="card-body register-card-body">
+            <p class="register-box-msg">Register a new membership</p>
+            <form action="../index3.html" method="post">
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" placeholder="Full Name" />
+                    <div class="input-group-text"><span class="bi bi-person"></span></div>
+                </div>
+                <div class="input-group mb-3">
+                    <input type="email" class="form-control" placeholder="Email" />
+                    <div class="input-group-text"><span class="bi bi-envelope"></span></div>
+                </div>
+                <div class="input-group mb-3">
+                    <input type="password" class="form-control" placeholder="Password" />
+                    <div class="input-group-text"><span class="bi bi-lock-fill"></span></div>
+                </div>
+                <!--begin::Row-->
+                <div class="row">
+                    <div class="col-8">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
+                            <label class="form-check-label" for="flexCheckDefault">
+                                I agree to the <a href="#">terms</a>
+                            </label>
+                        </div>
+                    </div>
+                    <!-- /.col -->
+                    <div class="col-4">
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">Sign In</button>
+                        </div>
+                    </div>
+                    <!-- /.col -->
+                </div>
+                <!--end::Row-->
+            </form>
+            <div class="social-auth-links text-center mb-3 d-grid gap-2">
+                <p>- OR -</p>
+                <a href="#" class="btn btn-primary">
+                    <i class="bi bi-facebook me-2"></i> Sign in using Facebook
+                </a>
+                <a href="#" class="btn btn-danger">
+                    <i class="bi bi-google me-2"></i> Sign in using Google+
+                </a>
+            </div>
+            <!-- /.social-auth-links -->
+            <p class="mb-0">
+                <a href="login.html" class="text-center"> I already have a membership </a>
+            </p>
+        </div>
+        <!-- /.register-card-body -->
+    </div>
 </div>
-</body>
-</html>
-
-
-<!--
-<script defer>
-    $(document).ready(function () {
-        //toastr.success('Welcome to this page');
-        getAllCategory();
-
-
-
-        $("#isParent").on("change", function () {
-            if ($(this).is(":checked")) {
-                $("#categorySelect").hide();
-            } else {
-                $("#categorySelect").show();
-            }
-        });
-
-        $(".submit").click(function (event) {
-            event.preventDefault();
-
-            let validationOK = submitCategoryValidation();
-            if (validationOK) {
-                let requestBody=  {
-                    "name": null,
-                    "parentId": null
-                }
-                let isParent = $("#isParent").is(":checked");
-                let category = $("#category").val();
-                let categorySelected = $("#categorySelect select :selected").val();
-                if (isParent) {
-                    requestBody.isParent = null;
-                    requestBody.name = category;
-                } else {
-                    requestBody.name = category;
-                    requestBody.parentId=categorySelected;
-                    //requestBody.parentId = null;
-                }
-
-                var settings = {
-                    "url": STRINGS.API_BASE_URL+"/Categories/create",
-                    "method": "POST",
-                    "timeout": 0,
-                    "headers": {
-                        "Content-Type": "application/json"
-                    },
-                    "data": JSON.stringify(requestBody),
-                };
-
-                $.ajax(settings).done(function (response) {
-                    console.log(response);
-                    toastr.success(response.message)
-                    location.reload();
-                    getAllCategory();
-                });
-
-            };
-        });
+ <!--end::Required Plugin(AdminLTE)--><!--begin::OverlayScrollbars Configure-->
+<script>
+    const SELECTOR_SIDEBAR_WRAPPER = '.sidebar-wrapper';
+    const Default = {
+        scrollbarTheme: 'os-theme-light',
+        scrollbarAutoHide: 'leave',
+        scrollbarClickScroll: true,
+    };
+    document.addEventListener('DOMContentLoaded', function () {
+        const sidebarWrapper = document.querySelector(SELECTOR_SIDEBAR_WRAPPER);
+        if (sidebarWrapper && typeof OverlayScrollbarsGlobal?.OverlayScrollbars !== 'undefined') {
+            OverlayScrollbarsGlobal.OverlayScrollbars(sidebarWrapper, {
+                scrollbars: {
+                    theme: Default.scrollbarTheme,
+                    autoHide: Default.scrollbarAutoHide,
+                    clickScroll: Default.scrollbarClickScroll,
+                },
+            });
+        }
     });
-
-    function submitCategoryValidation() {
-        let isParent = $("#isParent").is(":checked");
-        let category = $("#category").val();
-        let categorySelected = $("#categorySelect select").val();
-
-        if (category === undefined || category === '' || category.trim() === '') {
-            toastr.error("Category Name is required.")
-            return false;
-        }
-        if (!isParent) {
-            if (!categorySelected || categorySelected === 'Select') {
-                toastr.error(" Parent Category is required.");
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    function getAllCategory(){
-
-        var settings = {
-            "url": STRINGS.API_BASE_URL+"/Categories/getAll",
-            "method": "GET",
-            "timeout": 0,
-        };
-
-        $.ajax(settings).done(function (response) {
-            console.log(response);
-            //toastr.success(response.message);
-            console.log(response);
-            $("#categorySelect select").empty();
-            $("#categorySelect select").append(`<option selected>Select</option>`)
-            response.content.forEach(current=>{
-                $("#categorySelect select").append(`
-                    <option value="` + current.id + `">` + current.name + `</option>
-                `);
-            })
-
-        });
-    }
-
 </script>
--->
+
+<!-- /.login-box -->
+
+<!-- jQuery -->
+<script th:src="@{~/webjars/AdminLTE/3.2.0/plugins/jquery/jquery.min.js}" type="text/javascript"></script>
+<!-- Bootstrap 4 -->
+<script th:src="@{~/webjars/AdminLTE/3.2.0/plugins/bootstrap/js/bootstrap.bundle.min.js}"
+        type="text/javascript"></script>
+<!-- AdminLTE App -->
+<script th:src="@{~/webjars/AdminLTE/3.2.0/dist/js/adminlte.min.js}" type="text/javascript"></script>
+
+
+<!--end::OverlayScrollbars Configure-->
+<!--end::Script-->
+</body>
+<!--end::Body-->
+</html>

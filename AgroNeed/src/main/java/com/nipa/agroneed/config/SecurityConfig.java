@@ -23,19 +23,22 @@ import java.util.List;
 @EnableMethodSecurity(securedEnabled = true, jsr250Enabled = true, prePostEnabled = true)
 public class SecurityConfig {
 
+    public static final String COOKIES_JWT_TOKEN_KEY = "jwtToken";
+    public static final int COOKIES_JWT_TOKEN_MAX_AGE = 24 * 60 * 60;// 1 day expiry
+
     private final CustomUserDetailsService customUserDetailsService;
     private final PasswordEncoder passwordEncoder;
     private final MyAuthenticationEntryPoint myAuthenticationEntryPoint;
-    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final JwtAuthAndCookieFilter jwtAuthAndCookieFilter;
 
     @Value("${server.port}")
     private Integer port;
 
-    public SecurityConfig(CustomUserDetailsService customUserDetailsService, PasswordEncoder passwordEncoder, MyAuthenticationEntryPoint myAuthenticationEntryPoint, JwtAuthenticationFilter jwtAuthenticationFilter) {
+    public SecurityConfig(CustomUserDetailsService customUserDetailsService, PasswordEncoder passwordEncoder, MyAuthenticationEntryPoint myAuthenticationEntryPoint, JwtAuthAndCookieFilter jwtAuthAndCookieFilter) {
         this.customUserDetailsService = customUserDetailsService;
         this.passwordEncoder = passwordEncoder;
         this.myAuthenticationEntryPoint = myAuthenticationEntryPoint;
-        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+        this.jwtAuthAndCookieFilter = jwtAuthAndCookieFilter;
     }
 
     @Bean
@@ -56,10 +59,11 @@ public class SecurityConfig {
                 .exceptionHandling(ex -> ex.authenticationEntryPoint(myAuthenticationEntryPoint)) //exception handle kora hoyeche,when unauthorised user can access in API then show the message 401,403.here we creaye a custom class where we decelare
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))//In this application we use jwt thats why no nned to store any session.here stateless means every request can be checked newly,don't create any session.
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/login", "/register","/addRole").permitAll() //which API canbe public here we permit theses API.In those API without others API van not be access without jwt token.
+                        .requestMatchers("/login", "/register", "/addRole", "/addCategory", "/Categories/create", "/Categories/getAll",
+                                "/css/**", "/images/**", "/favicon.ico", "/favicon.png", "/shared/**", "/webjars/AdminLTE/**").permitAll()
                         .anyRequest().authenticated()
                 )
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);//added jwt token authentication filter
+                .addFilterBefore(jwtAuthAndCookieFilter, UsernamePasswordAuthenticationFilter.class);//added jwt token authentication filter
 
         return http.build(); //lastly register in spring security
     }

@@ -10,6 +10,48 @@
         if (typeof value === 'object' && Object.keys(value).length === 0) return true;
         return false;
     }
+
+    //############################################################ AJAX START ##########################################################################################
+    window.Ajax = {
+        jsonRequest: function (method, endpoint, data = null, headers = {}) {
+            return new Promise((resolve, reject) => {
+                $.ajax({
+                    url: window.STRINGS.API_BASE_URL + endpoint,
+                    type: method,
+                    data: data ? JSON.stringify(data) : null,
+                    contentType: "application/json",
+                    dataType: "json",
+                    headers: headers,
+                    xhrFields: {withCredentials: true}, // Ensure cookies (JWT, session) are sent
+                    success: function (response) {
+                        resolve(response);
+                    },
+                    error: function (xhr, status, error) {
+                        console.error(`Error: ${status} - ${error}`, xhr);
+                        reject(xhr.responseJSON || xhr.responseText || {message: "Unknown error"});
+                    }
+                });
+            });
+        },
+
+        get: function (endpoint, params = {}, headers = {}) {
+            let queryString = new URLSearchParams(params).toString();
+            return this.jsonRequest("GET", endpoint + (queryString ? `?${queryString}` : ""), null, headers);
+        },
+
+        post: function (endpoint, data, headers = {}) {
+            return this.jsonRequest("POST", endpoint, data, headers);
+        },
+
+        put: function (endpoint, data, headers = {}) {
+            return this.jsonRequest("PUT", endpoint, data, headers);
+        },
+
+        delete: function (endpoint, headers = {}) {
+            return this.jsonRequest("DELETE", endpoint, null, headers);
+        }
+    };
+    //############################################################ AJAX START ##########################################################################################
 </script>
 
 <!-- jQuery -->

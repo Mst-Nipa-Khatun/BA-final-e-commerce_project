@@ -2,13 +2,16 @@ package com.nipa.agroneed.service.Impl;
 
 
 import com.nipa.agroneed.config.JwtTokenProvider;
+import com.nipa.agroneed.config.SecurityConfig;
 import com.nipa.agroneed.dto.*;
 import com.nipa.agroneed.entity.Role;
 import com.nipa.agroneed.entity.User;
 import com.nipa.agroneed.repository.RoleRepository;
 import com.nipa.agroneed.repository.UserRepository;
 import com.nipa.agroneed.utils.ResponseBuilder;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -34,7 +37,7 @@ public class AuthService {
         this.roleRepository = roleRepository;
     }
 
-    public Response login(LoginDto loginDto, HttpServletRequest httpServletRequest) {
+    public Response login(LoginDto loginDto, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
         User user = userRepository.findByPhoneAndStatus(loginDto.getPhone(), 1);
         if (user == null) {
             return ResponseBuilder.getFailResponse(HttpStatus.BAD_REQUEST,
@@ -47,6 +50,15 @@ public class AuthService {
             LoginResponseDto loginResponseDto = new LoginResponseDto();
             loginResponseDto.setToken(jwtTokenProvider.generateToken(authentication, httpServletRequest));
             loginResponseDto.setUsername(user.getName());
+
+            Cookie cookie = new Cookie(SecurityConfig.COOKIES_JWT_TOKEN_KEY, loginResponseDto.getToken());
+            cookie.setHttpOnly(true);//The HttpOnly flag makes the cookie inaccessible to JavaScript running in the browser, which helps mitigate the risk of cross-site scripting (XSS) attacks.
+            //cookie.setSecure(true); // Ensure the cookie is sent over HTTPS
+            cookie.setSecure(false); // Ensure the cookie is sent over HTTP
+            cookie.setPath("/");
+            cookie.setMaxAge(SecurityConfig.COOKIES_JWT_TOKEN_MAX_AGE);
+            httpServletResponse.addCookie(cookie);
+
             return ResponseBuilder.getFailResponse(HttpStatus.OK,
                     loginResponseDto, "Login Successful");
         }

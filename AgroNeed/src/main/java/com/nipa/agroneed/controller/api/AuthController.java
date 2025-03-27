@@ -7,6 +7,7 @@ import com.nipa.agroneed.dto.Response;
 import com.nipa.agroneed.dto.UserDto;
 import com.nipa.agroneed.service.Impl.AuthService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,20 +25,19 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public Response login(@RequestBody LoginDto loginDto, HttpServletRequest httpServletRequest) {
-        return authService.login(loginDto, httpServletRequest);
+    public Response login(@RequestBody LoginDto loginDto, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
+        return authService.login(loginDto, httpServletRequest, httpServletResponse);
     }
 
-    @PostMapping("/register")
+    @PostMapping("/registerUser")
     public Response register(@RequestBody UserDto userDto) {
         return authService.register(userDto);
     }
+
     @PostMapping("/addRole")
     public Response addRole(@RequestBody AddRoleDto addRoleDto) {
         return authService.addRole(addRoleDto);
     }
-
-
 
 
 }

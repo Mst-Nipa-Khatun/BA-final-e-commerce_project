@@ -91,7 +91,7 @@
                         getAllCategory();
                     }).catch(error=>{
                     console.log(error)
-                    toastr.error("Error:",response.message);
+                    showWarningToast("Error:",response.message);
                 })
                 /*$.ajax(settings).done(function (response) {
                     console.log(response);

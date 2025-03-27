@@ -11,6 +11,44 @@
         return false;
     }
 
+
+    window.showWarningToast = function (message, title = '') {
+        toastr.warning(message, title);
+    }
+
+    window.showSuccessToast = function (message, title = '') {
+        toastr.success(message, title);
+    }
+
+    window.showErrorToast = function (message, title = '') {
+        toastr.error(message, title);
+    }
+
+    window.showInfoToast = function (message, title = '') {
+        toastr.info(message, title);
+    }
+
+
+    window.showWarningToast = function (message, title = '', options = {}) {
+        toastr.warning(message, title, options);
+    }
+
+    window.showSuccessToast = function (message, title = '', options = {}) {
+        toastr.success(message, title, options);
+    }
+
+    window.showErrorToast = function (message, title = '', options = {}) {
+        toastr.error(message, title, options);
+    }
+
+    window.showInfoToast = function (message, title = '', options = {}) {
+        toastr.info(message, title, options);
+    }
+
+
+
+
+
     //############################################################ AJAX START ##########################################################################################
     window.Ajax = {
         jsonRequest: function (method, endpoint, data = null, headers = {}) {

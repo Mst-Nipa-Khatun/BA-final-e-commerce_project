@@ -20,7 +20,7 @@ CREATE TABLE Users (
                        id INT PRIMARY KEY AUTO_INCREMENT,
                        name VARCHAR(255) NOT NULL,
                        phone varchar(20) not null ,
-                       email VARCHAR(255) UNIQUE NOT NULL,
+                       email VARCHAR(255) default null,
                        status integer,
                        password_hash VARCHAR(255) NOT NULL,
                        address varchar(255),

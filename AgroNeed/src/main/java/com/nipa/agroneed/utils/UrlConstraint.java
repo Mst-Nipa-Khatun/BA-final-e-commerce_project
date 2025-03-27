@@ -22,7 +22,7 @@ public final class UrlConstraint {
 
     }
     public static class Users{
-        public static final String ROOT = "/Users";
+        public static final String ROOT = "/users";
         public static final String CREATE = "/create";
         public static final String GET_ALL = "/getAll";
     }

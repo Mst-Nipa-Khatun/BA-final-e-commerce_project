@@ -125,15 +125,6 @@
 
     function getAllCategory(){
 
-        var settings = {
-            "url": STRINGS.API_BASE_URL+"/Categories/getAll",
-            "xhrFields": {
-                "withCredentials": true // Include cookies in the request
-            },
-            "method": "GET",
-            "timeout": 0,
-        };
-
         Ajax.get("/Categories/getAll",null,null)
             .then(response=>{
                 console.log(response);

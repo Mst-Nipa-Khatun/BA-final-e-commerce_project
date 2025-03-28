@@ -52,14 +52,15 @@ public class AuthService {
             loginResponseDto.setUsername(user.getName());
 
             Cookie cookie = new Cookie(SecurityConfig.COOKIES_JWT_TOKEN_KEY, loginResponseDto.getToken());
-            cookie.setHttpOnly(true);//The HttpOnly flag makes the cookie inaccessible to JavaScript running in the browser, which helps mitigate the risk of cross-site scripting (XSS) attacks.
+            //cookie.setHttpOnly(true);//The HttpOnly flag makes the cookie inaccessible to JavaScript running in the browser, which helps mitigate the risk of cross-site scripting (XSS) attacks.
+            cookie.setHttpOnly(false);
             //cookie.setSecure(true); // Ensure the cookie is sent over HTTPS
             cookie.setSecure(false); // Ensure the cookie is sent over HTTP
             cookie.setPath("/");
             cookie.setMaxAge(SecurityConfig.COOKIES_JWT_TOKEN_MAX_AGE);
             httpServletResponse.addCookie(cookie);
 
-            return ResponseBuilder.getFailResponse(HttpStatus.OK,
+            return ResponseBuilder.getSuccessResponse(HttpStatus.OK,
                     loginResponseDto, "Login Successful");
         }
         return ResponseBuilder.getFailResponse(HttpStatus.BAD_REQUEST,

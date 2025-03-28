@@ -24,7 +24,7 @@ public class CreateRunTimeUserTest {
 
     private String phone = "01754297677";
 
-    private String password = "Admin@1234.";
+    private String password = "1234";
 
     public CreateRunTimeUserTest(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;

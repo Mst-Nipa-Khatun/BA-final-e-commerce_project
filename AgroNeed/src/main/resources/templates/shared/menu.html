@@ -1,5 +1,6 @@
 <!-- Main Sidebar Container -->
-<aside class="main-sidebar sidebar-dark-primary elevation-4">
+<aside class="main-sidebar sidebar-dark-primary elevation-4" xmlns:th="http://www.thymeleaf.org"
+       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
     <!-- Brand Logo -->
     <a class="brand-link" href="/">
         <img alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
@@ -20,11 +21,13 @@
                 <a class="d-block" href="#">MST NIPA KHATUN</a>
             </div>
         </div>
-
+        <div>
+            User roles: <span th:text="${#authentication.authorities}"></span>
+        </div>
         <!-- Sidebar Menu -->
         <nav class="mt-2">
 
-            <ul class="nav nav-pills nav-sidebar flex-column" data-accordion="false" data-widget="treeview" role="menu">
+            <ul sec:authorize="hasRole('ADMIN')" class="nav nav-pills nav-sidebar flex-column" data-accordion="false" data-widget="treeview" role="menu">
                 <!-- Add icons to the links using the .nav-icon class
                      with font-awesome or any other icon font library -->
 

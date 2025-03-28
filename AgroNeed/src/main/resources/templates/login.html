@@ -32,15 +32,15 @@
 
             <form method="post" th:action="@{~/login}">
                 <div class="input-group mb-3">
-                    <input class="form-control" name="username" placeholder="username" type="text">
+                    <input class="form-control" name="phone" id="phone" placeholder="phone" type="number">
                     <div class="input-group-append">
                         <div class="input-group-text">
-                            <span class="fas fa-user"></span>
+                            <span class="fas fa-phone"></span>
                         </div>
                     </div>
                 </div>
                 <div class="input-group mb-3">
-                    <input class="form-control" name="password" placeholder="Password" type="password">
+                    <input class="form-control" name="password" id="password" placeholder="Password" type="password">
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <span class="fas fa-lock"></span>
@@ -57,7 +57,7 @@
                         </div>
                     </div>
                     <div class="col-4">
-                        <button class="btn btn-primary btn-block" type="submit">Sign In</button>
+                        <button class="signIn btn btn-primary btn-block" type="submit">Sign In</button>
                     </div>
                 </div>
             </form>
@@ -72,10 +72,46 @@
         </div>
     </div>
 </div>
+<form id="dashBoardPage" action="/" method="get">
+
+</form>
 
 </body>
 </html>
-<script>
+<script defer type="application/javascript">
+    $(document).ready(function () {
+
+        $(".signIn").click(function (event){
+            event.preventDefault();
+            signInCallAPI()
+        })
+
+    });
+
+    function signInCallAPI() {
+        let phone = $("#phone").val();
+        let password = $("#password").val();
+        let requestBody = {
+            "phone": phone,
+            "password": password
+        }
+        Ajax.post("/login",requestBody)
+            .then(response=>{
+                console.log(response)
+                if(response.statusCode===200){
+                    showSuccessToast(response.message);
+                    setTimeout(function (){
+                        $("#dashBoardPage").submit();
+                    },1000)
+                }else {
+                    showWarningToast(response.message);
+                }
+            }).catch(error=>{
+                console.log(error.message);
+                showErrorToast("Error:"+error);
+        })
+
+    }
 
 
 </script>

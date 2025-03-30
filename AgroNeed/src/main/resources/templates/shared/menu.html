@@ -21,13 +21,17 @@
                 <a class="d-block" href="#">MST NIPA KHATUN</a>
             </div>
         </div>
-        <div>
-            User roles: <span th:text="${#authentication.authorities}"></span>
-        </div>
         <!-- Sidebar Menu -->
-        <nav class="mt-2">
+        <nav id="sideBar" class="mt-2">
 
-            <ul sec:authorize="hasRole('ADMIN')" class="nav nav-pills nav-sidebar flex-column" data-accordion="false" data-widget="treeview" role="menu">
+        </nav>
+        <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
+</aside>
+
+<script>
+    let adminSideBarOption = ` <ul  class="nav nav-pills nav-sidebar flex-column" data-accordion="false" data-widget="treeview" role="menu">
                 <!-- Add icons to the links using the .nav-icon class
                      with font-awesome or any other icon font library -->
 
@@ -116,8 +120,59 @@
                 </li>
 
             </ul>
-        </nav>
-        <!-- /.sidebar-menu -->
-    </div>
-    <!-- /.sidebar -->
-</aside>
+      `;
+    let userSidebarOption = ` <ul  class="nav nav-pills nav-sidebar flex-column" data-accordion="false" data-widget="treeview" role="menu">
+                <!-- Add icons to the links using the .nav-icon class
+                     with font-awesome or any other icon font library -->
+
+                <li class="nav-item has-treeview">
+                    <a class="nav-link" href="#">
+                        <i class="nav-icon fas fa-copy"></i>
+                        <p>
+                            Users
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+
+                    <!--CHILD-->
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>show</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="/">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>new</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="/viewAllProducts">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>All Products</p>
+                            </a>
+                        </li>
+                    </ul>
+
+                </li>
+
+            </ul>
+      `
+    try {
+        const value = localStorage.getItem("credential");
+        let credential = value ? JSON.parse(value) : null;
+        let isAdmin = credential.content.roles.filter(v => v === 'ROLE_ADMIN').length > 0;
+        if (isAdmin) {
+            $("#sideBar").append(adminSideBarOption)
+        } else {
+            $("#sideBar").append(userSidebarOption)
+        }
+    } catch (e) {
+        $("#sideBar").append(userSidebarOption)
+    }
+
+</script>

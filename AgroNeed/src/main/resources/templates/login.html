@@ -57,7 +57,7 @@
                         </div>
                     </div>
                     <div class="col-4">
-                        <button class="signIn btn btn-primary btn-block" type="submit">Sign In</button>
+                        <button class="signIn btn btn-primary btn-block" type="">Sign In</button>
                     </div>
                 </div>
             </form>
@@ -72,7 +72,7 @@
         </div>
     </div>
 </div>
-<form id="dashBoardPage" action="/" method="get">
+<form id="dashBoardPage" action="/pages/dashboard" method="get">
 
 </form>
 
@@ -100,6 +100,7 @@
                 console.log(response)
                 if(response.statusCode===200){
                     showSuccessToast(response.message);
+                    saveCredential(response)
                     setTimeout(function (){
                         $("#dashBoardPage").submit();
                     },1000)

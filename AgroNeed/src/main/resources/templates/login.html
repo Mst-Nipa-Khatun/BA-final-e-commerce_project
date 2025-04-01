@@ -30,7 +30,7 @@
 
             <p class="login-box-msg">Sign in to start your session</p>
 
-            <form method="post" th:action="@{~/login}">
+            <form method="post">
                 <div class="input-group mb-3">
                     <input class="form-control" name="phone" id="phone" placeholder="phone" type="number">
                     <div class="input-group-append">
@@ -64,7 +64,7 @@
 
 
             <p class="mb-1">
-                <a href="forgot-password.html">I forgot my password</a>
+                <a href="javascript:void(0)">I forgot my password</a>
             </p>
             <p class="mb-0">
                 <a class="text-center" href="/register">Register a new membership</a>
@@ -95,8 +95,16 @@
             "phone": phone,
             "password": password
         }
-        Ajax.post("/login",requestBody)
-            .then(response=>{
+
+        $.ajax({
+            url: STRINGS.API_BASE_URL + "/login",
+            type: "POST",
+            data: requestBody ? JSON.stringify(requestBody) : null,
+            contentType: "application/json",
+            dataType: "json",
+            //headers: { Authorization: `Bearer ${token}` },
+            xhrFields: { withCredentials: true },
+            success: function (response) {
                 console.log(response)
                 if(response.statusCode===200){
                     showSuccessToast(response.message);
@@ -107,10 +115,12 @@
                 }else {
                     showWarningToast(response.message);
                 }
-            }).catch(error=>{
+            },
+            error: function (error) {
                 console.log(error.message);
                 showErrorToast("Error:"+error);
-        })
+            }
+        });
 
     }
 

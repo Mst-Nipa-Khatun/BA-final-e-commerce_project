@@ -31,7 +31,36 @@
 
     function getAllProducts() {
 
-        var settings = {
+        Ajax.get("/Products/getAll",null,null)
+            .then(response=>{
+                console.log(response);
+                if(response.content===null){
+
+                }else{
+                    response.content.forEach(current => {
+                        let productCard=`<div class="col-md-3">
+                    <div class="col">
+                        <div class="card h-100 shadow">
+                            <img height="200px" width="200px" src="`+current.imageUrl+`" class="card-img-top" alt="Product 1">
+                            <div class="card-body text-center">
+                                <h5 class="card-title name">`+current.name+`</h5><br>
+                                <p class="text-muted description">`+current.description+`</p>
+                                <p class="text-muted price">$`+current.price+`</p>
+                                <p class="text-muted stock">`+current.stock+`</p>
+                                <button class="btn btn-primary w-100">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>`
+                        $("#productsList").append(productCard);
+                    });
+                }
+            }).catch(error=>{
+                console.log(error);
+                showErrorToast("Error:",+error);
+        })
+
+/*        var settings = {
             "url": STRINGS.API_BASE_URL + "/Products/getAll",
             "method": "GET",
             "timeout": 0,
@@ -41,7 +70,6 @@
             console.log(response);
             //toastr.success(response.message);
             response.content.forEach(current => {
-
                 let productCard=`<div class="col-md-3">
                     <div class="col">
                         <div class="card h-100 shadow">
@@ -60,19 +88,7 @@
             });
 
         }).fail(function (jqXHR, textStatus, errorThrown) {
-            console.error("AJAX Error:", textStatus, errorThrown);
-            console.error("Response Text:", jqXHR.responseText);
-
-            let errorMessage = "An error occurred. Please try again.";
-
-            // Try to parse the error message if the response contains JSON
-            if (jqXHR.responseJSON && jqXHR.responseJSON.message) {
-                errorMessage = jqXHR.responseJSON.message;
-            } else if (jqXHR.responseText) {
-                errorMessage = jqXHR.responseText;
-            }
-            toastr.error(errorMessage);
-        });
+        });*/
     }
 
 </script>

@@ -98,8 +98,16 @@
 
         }
 
-        Ajax.post("/users/create", requestBody)
-            .then(response => {
+
+        $.ajax({
+            url: STRINGS.API_BASE_URL + "/users/create",
+            type: "POST",
+            data: requestBody ? JSON.stringify(requestBody) : null,
+            contentType: "application/json",
+            dataType: "json",
+            //headers: { Authorization: `Bearer ${token}` },
+            xhrFields: { withCredentials: true },
+            success: function (response) {
                 console.log(response);
 
                 if (response.statusCode === 201) {
@@ -111,11 +119,12 @@
                 } else {
                     showWarningToast(response.message)
                 }
-            }).catch(error => {
+            },
+            error: function (error) {
                 console.log(error);
                 showErrorToast("Error:" + error.message);
             }
-        )
+        });
 
 
     }

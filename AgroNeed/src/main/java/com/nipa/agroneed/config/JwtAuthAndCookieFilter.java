@@ -64,6 +64,10 @@ public class JwtAuthAndCookieFilter extends OncePerRequestFilter {
                 }
             }
 
+            String authorization = httpServletRequest.getHeader("Authorization");
+            if (authorization != null && authorization.startsWith("Bearer ")) {
+                jwt = authorization.substring(7);//for remove [Bearer ] any get only token.
+            }
             // Validate the JWT token
             if (StringUtils.hasText(jwt) && jwtTokenProvider.isValidateToken(jwt, httpServletRequest)) {
                 Long userId = jwtTokenProvider.getUserIdFromToken(jwt);

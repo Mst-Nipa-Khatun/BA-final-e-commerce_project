@@ -61,7 +61,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/login", "/pages/**", "/error", "/register",
                                 "/webjars/**", "/css/**", "/images/**", "/favicon.ico",
-                                "/favicon.png", "/shared/**", "/webjars/AdminLTE/**").permitAll()
+                                "/favicon.png", "/shared/**", "/webjars/AdminLTE/**",
+                                "/Categories/getAll").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthAndCookieFilter, UsernamePasswordAuthenticationFilter.class);//added jwt token authentication filter

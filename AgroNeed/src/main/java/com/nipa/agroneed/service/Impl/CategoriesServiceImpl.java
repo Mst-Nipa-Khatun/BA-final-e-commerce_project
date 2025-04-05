@@ -27,13 +27,13 @@ public class CategoriesServiceImpl implements CategoriesService {
 
     @Override
     public Response createCategory(CategoriesDto categoriesDto) {
-        CategoriesEntity categories = categoriesRepository.findByNameAndStatus(categoriesDto.getName(), 1);
+        CategoriesEntity categories = categoriesRepository.findByNameAndStatus(categoriesDto.getCategoryName(), 1);
         if (categories != null) {
             return ResponseBuilder.getFailResponse(HttpStatus.BAD_REQUEST, null, "Category already exists");
         }
 
         CategoriesEntity category = new CategoriesEntity();
-        category.setName(categoriesDto.getName());
+        category.setName(categoriesDto.getCategoryName());
         category.setParentId(categoriesDto.getParentId());
         category.setStatus(1);
 
@@ -59,7 +59,7 @@ public class CategoriesServiceImpl implements CategoriesService {
             for (CategoriesEntity categoriesEntity : categoriesEntities) {
                 CategoriesDto categoriesDto = new CategoriesDto();
                 categoriesDto.setId(categoriesEntity.getId());
-                categoriesDto.setName(categoriesEntity.getName());
+                categoriesDto.setCategoryName(categoriesEntity.getName());
                 categoriesDto.setParentId(categoriesEntity.getParentId());
                 categoriesDto.setStatus(categoriesEntity.getStatus());
                 categoriesDtos.add(categoriesDto);
@@ -77,7 +77,8 @@ public class CategoriesServiceImpl implements CategoriesService {
             for (CategoriesEntity categoriesEntity : categoriesEntities) {
                 CategoriesDto categoriesDto = new CategoriesDto();
                 categoriesDto.setId(categoriesEntity.getId());
-                categoriesDto.setName(categoriesEntity.getName());
+                categoriesDto.setCategoryName(categoriesEntity.getName());
+                categoriesDto.setParentId(categoriesEntity.getParentId());
                 categoriesDto.setStatus(categoriesEntity.getStatus());
                 categoriesDtos.add(categoriesDto);
             }
@@ -92,7 +93,7 @@ public class CategoriesServiceImpl implements CategoriesService {
         CategoriesEntity categories = categoriesRepository.findByIdAndStatus(id, 1);
         if (categories != null) {
             CategoriesDto categoriesDto = new CategoriesDto();
-            categoriesDto.setName(categories.getName());
+            categoriesDto.setCategoryName(categories.getName());
             categoriesDto.setParentId(categories.getParentId());
             categoriesDto.setStatus(categories.getStatus());
             return ResponseBuilder.getSuccessResponse(HttpStatus.OK, categoriesDto, "Category found");
@@ -108,7 +109,7 @@ public class CategoriesServiceImpl implements CategoriesService {
             for (CategoriesEntity categoriesEntity : categories) {
                 CategoriesDto categoriesDto = new CategoriesDto();
                 categoriesDto.setId(categoriesEntity.getId());
-                categoriesDto.setName(categoriesEntity.getName());
+                categoriesDto.setCategoryName(categoriesEntity.getName());
                 categoriesDto.setParentId(categoriesEntity.getParentId());
                 categoriesDto.setStatus(categoriesEntity.getStatus());
                 categoriesDtos.add(categoriesDto);
@@ -135,7 +136,7 @@ public class CategoriesServiceImpl implements CategoriesService {
             CategoriesEntity deletedCategory = categoriesRepository.save(categories);
 
             CategoriesDto categoriesDto = new CategoriesDto();
-            categoriesDto.setName(deletedCategory.getName());
+            categoriesDto.setCategoryName(deletedCategory.getName());
             categoriesDto.setParentId(deletedCategory.getParentId());
             return ResponseBuilder.getSuccessResponse(HttpStatus.OK, deletedCategory, "Category deleted successfully");
 
@@ -147,14 +148,14 @@ public class CategoriesServiceImpl implements CategoriesService {
     public Response editCategoryById(Long id, CategoriesDto categoriesDto) {
         CategoriesEntity categories = categoriesRepository.findByIdAndStatus(id, 1);
         if (categories != null) {
-            categories.setName(categoriesDto.getName());
+            categories.setName(categoriesDto.getCategoryName());
             categories.setParentId(categoriesDto.getParentId());
             categories.setStatus(categoriesDto.getStatus());
             CategoriesEntity savedCategory = categoriesRepository.save(categories);
 
             CategoriesDto updatedCategoriesDto = new CategoriesDto();
             updatedCategoriesDto.setId(savedCategory.getId());
-            updatedCategoriesDto.setName(savedCategory.getName());
+            updatedCategoriesDto.setCategoryName(savedCategory.getName());
             updatedCategoriesDto.setParentId(savedCategory.getParentId());
             updatedCategoriesDto.setStatus(savedCategory.getStatus());
 

@@ -79,27 +79,34 @@
 
     //############################################################ AJAX START ##########################################################################################
     window.Ajax = {
-        jsonRequest: function (method, endpoint, data = null, headers = {}) {
+        jsonRequest: function (method, endpoint, data = null, headers = {},isTokenValidationRequired) {
             return new Promise((resolve, reject) => {
-                let credential = window.getCredential();
+                if (!(isTokenValidationRequired === true)) {
+                    this.performAjax(method, endpoint, data, headers, null)
+                        .then(resolve)
+                        .catch(reject);
+                } else {
 
-                // Step 1: Check if credentials exist
-                if (!credential || !credential.content.token) {
-                    console.warn("No credentials found, redirecting to login...");
-                    this.handleInvalidSession();
-                    return reject({ message: "No credentials found" });
+                    let credential = window.getCredential();
+
+                    // Step 1: Check if credentials exist
+                    if (!credential || !credential.content.token) {
+                        console.warn("No credentials found, redirecting to login...");
+                        this.handleInvalidSession();
+                        return reject({ message: "No credentials found" });
+                    }
+
+                    // Step 2: Validate token before making request
+                    this.validateToken(credential.content.token).then(() => {
+                        // Step 3: If token is valid, proceed with actual API request
+                        this.performAjax(method, endpoint, data, headers, credential.content.token).then(resolve).catch(reject);
+                    }).catch(error => {
+                        console.log(error)
+                        console.warn("Token is invalid, redirecting to login...");
+                        this.handleInvalidSession();
+                        reject({ message: "Invalid token, redirected to login" });
+                    });
                 }
-
-                // Step 2: Validate token before making request
-                this.validateToken(credential.content.token).then(() => {
-                    // Step 3: If token is valid, proceed with actual API request
-                    this.performAjax(method, endpoint, data, headers, credential.content.token).then(resolve).catch(reject);
-                }).catch(error => {
-                    console.log(error)
-                    console.warn("Token is invalid, redirecting to login...");
-                    this.handleInvalidSession();
-                    reject({ message: "Invalid token, redirected to login" });
-                });
             });
         },
 
@@ -162,13 +169,13 @@
             window.location.href = "/login"; // Redirect to login page
         },
 
-        get: function (endpoint, params = {}, headers = {}) {
+        get: function (endpoint, params = {}, headers = {},isTokenValidationRequired) {
             let queryString = new URLSearchParams(params).toString();
-            return this.jsonRequest("GET", endpoint + (queryString ? `?${queryString}` : ""), null, headers);
+            return this.jsonRequest("GET", endpoint + (queryString ? `?${queryString}` : ""), null, headers,isTokenValidationRequired);
         },
 
-        post: function (endpoint, data, headers = {}) {
-            return this.jsonRequest("POST", endpoint, data, headers);
+        post: function (endpoint, data, headers = {},isTokenValidationRequired) {
+            return this.jsonRequest("POST", endpoint, data, headers,isTokenValidationRequired);
         },
 
         put: function (endpoint, data, headers = {}) {

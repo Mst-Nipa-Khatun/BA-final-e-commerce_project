@@ -5,6 +5,7 @@ import com.nipa.agroneed.dto.CategoriesDto;
 import com.nipa.agroneed.dto.Response;
 import com.nipa.agroneed.service.CategoriesService;
 import com.nipa.agroneed.utils.UrlConstraint;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -16,6 +17,8 @@ public class CategoriesController {
     public CategoriesController(CategoriesService categoriesService) {
         this.categoriesService = categoriesService;
     }
+
+    @Secured("ROLE_ADMIN")
     @PostMapping(UrlConstraint.Categories.CREATE)
     public Response createCategory(@RequestBody CategoriesDto categoriesDto) {
         return categoriesService.createCategory(categoriesDto);

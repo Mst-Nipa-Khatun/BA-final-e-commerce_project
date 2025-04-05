@@ -63,7 +63,7 @@
             console.error(e)
         }
     });
-    $(document).on('click', '#sideBar li.nav-item > a', function (e) {
+    $(document).on('click', '#sideBar li.nav-option > a', function (e) {
         e.preventDefault();
 
         // Get only the clicked <li> (not the parents)
@@ -256,7 +256,7 @@
     function renderNode(node) {
         const hasChildren = node.children.length > 0;
         let html = `
-            <li data-id="` + node.id + `" class="nav-item ${hasChildren ? 'has-treeview' : ''}">
+            <li data-id="` + node.id + `" class="nav-item nav-option ${hasChildren ? 'has-treeview' : ''}">
                 <a href="#" class="nav-link">
                     <i class="nav-icon fas fa-folder"></i>
                     <p>

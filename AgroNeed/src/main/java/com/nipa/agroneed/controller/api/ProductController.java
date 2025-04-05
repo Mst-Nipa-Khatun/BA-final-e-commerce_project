@@ -6,6 +6,7 @@ import com.nipa.agroneed.dto.SelectedProductsDto;
 import com.nipa.agroneed.service.ProductsService;
 import com.nipa.agroneed.utils.UrlConstraint;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -25,6 +26,7 @@ public class ProductController {
         this.productsService = productsService;
     }
 
+    @Secured("ROLE_ADMIN")
     @PostMapping(path = UrlConstraint.Products.CREATE,
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE)

@@ -124,20 +124,36 @@
                         console.log(response)
                         resolve(response);
                     },
-                    error: function (xhr, status, error) {
-                        console.error("AJAX Error:", textStatus, errorThrown);
-                        console.error("Response Text:", jqXHR.responseText);
+                    error: function (xhr, status, errorThrown) {
+                        console.error("AJAX Error:", status, errorThrown);
+                        console.error("Response Text:", xhr.responseText);
 
                         let errorMessage = "An error occurred. Please try again.";
 
-                        // Try to parse the error message if the response contains JSON
-                        if (jqXHR.responseJSON && jqXHR.responseJSON.message) {
-                            errorMessage = jqXHR.responseJSON.message;
-                        } else if (jqXHR.responseText) {
-                            errorMessage = jqXHR.responseText;
+                        // If responseJSON is available and has a message
+                        if (xhr.responseJSON && xhr.responseJSON.message) {
+                            errorMessage = xhr.responseJSON.message;
                         }
-                        reject(xhr.responseJSON || xhr.responseText || { message: "Unknown error" });
+                        // Try to parse responseText if responseJSON not available
+                        else if (xhr.responseText) {
+                            try {
+                                const json = JSON.parse(xhr.responseText);
+                                if (json.message) {
+                                    errorMessage = json.message;
+                                }
+                            } catch (e) {
+                                errorMessage = xhr.responseText;
+                            }
+                        }
+
+                        // Show or use the message
+                        showErrorToast(errorMessage); // or display somewhere in UI
+
+                        // Pass error object for further handling
+                        reject(xhr.responseJSON || { message: errorMessage });
                     }
+
+
                 });
             });
         },

@@ -1,12 +1,12 @@
 <style>
     #sideBar {
-        max-height: 100vh;      /* Make it fit the screen */
-        overflow-y: auto;       /* Enable vertical scroll */
-        padding-right: 10px;    /* Optional, to avoid scrollbar overlap */
+        max-height: 100vh; /* Make it fit the screen */
+        overflow-y: auto; /* Enable vertical scroll */
+        padding-right: 10px; /* Optional, to avoid scrollbar overlap */
     }
 
     .nav-treeview {
-        margin-left: 10px;      /* Indent child menus */
+        margin-left: 10px; /* Indent child menus */
     }
 </style>
 
@@ -48,6 +48,10 @@
     <!-- /.sidebar -->
 </aside>
 
+<form id="hiddenForm" action="/pages/currentProduct" method="get">
+    <input type="hidden" name="categoryId" id="categoryId"/>
+</form>
+
 <script>
     $(document).ready(function () {
         try {
@@ -74,7 +78,10 @@
         li.addClass('active');
 
         const categoryId = li.data('id');
-        showInfoToast(categoryId);  // Your custom alert or toast function
+        $("#categoryId").val(categoryId);
+        $("#hiddenForm").submit();
+
+
     });
 
     let adminSideBarOption = ` <ul  class="nav nav-pills nav-sidebar flex-column" data-accordion="false" data-widget="treeview" role="menu">
@@ -165,30 +172,30 @@
       `;
 
 
-/*
+    /*
 
-    const categories = [/!*This is get all category api response pattern.*!/
-        {"id": 1, "categoryName": "Electronics", "parentId": null},
-        {"id": 2, "categoryName": "Mobiles", "parentId": 1},
-        {"id": 3, "categoryName": "Laptops", "parentId": 1},
-        {"id": 4, "categoryName": "Fashion", "parentId": null},
-        {"id": 5, "categoryName": "Men", "parentId": 4},
-        {"id": 6, "categoryName": "Women", "parentId": 4},
-        {"id": 7, "categoryName": "Smartphones", "parentId": 2},
-        {"id": 8, "categoryName": "Gaming Laptops", "parentId": 3},
-        {"id": 9, "categoryName": "T-Shirts", "parentId": 5},
-        {"id": 10, "categoryName": "Dresses", "parentId": 6},
-        {"id": 11, "categoryName": "Cosmetics", "parentId": 6},
-        {"id": 12, "categoryName": "Cream", "parentId": 11},
-        {"id": 13, "categoryName": "Loushan", "parentId": 12},
-        {"id": 14, "categoryName": "Lipstick", "parentId": 13},
-        {"id": 15, "categoryName": "Eye linear", "parentId": 14},
-        {"id": 16, "categoryName": "Shampoo", "parentId": 15},
-        {"id": 17, "categoryName": "Soap", "parentId": 16},
-        {"id": 18, "categoryName": "Dettol", "parentId": 17},
-        {"id": 19, "categoryName": "150g dettol", "parentId": 18}
-    ];
-*/
+        const categories = [/!*This is get all category api response pattern.*!/
+            {"id": 1, "categoryName": "Electronics", "parentId": null},
+            {"id": 2, "categoryName": "Mobiles", "parentId": 1},
+            {"id": 3, "categoryName": "Laptops", "parentId": 1},
+            {"id": 4, "categoryName": "Fashion", "parentId": null},
+            {"id": 5, "categoryName": "Men", "parentId": 4},
+            {"id": 6, "categoryName": "Women", "parentId": 4},
+            {"id": 7, "categoryName": "Smartphones", "parentId": 2},
+            {"id": 8, "categoryName": "Gaming Laptops", "parentId": 3},
+            {"id": 9, "categoryName": "T-Shirts", "parentId": 5},
+            {"id": 10, "categoryName": "Dresses", "parentId": 6},
+            {"id": 11, "categoryName": "Cosmetics", "parentId": 6},
+            {"id": 12, "categoryName": "Cream", "parentId": 11},
+            {"id": 13, "categoryName": "Loushan", "parentId": 12},
+            {"id": 14, "categoryName": "Lipstick", "parentId": 13},
+            {"id": 15, "categoryName": "Eye linear", "parentId": 14},
+            {"id": 16, "categoryName": "Shampoo", "parentId": 15},
+            {"id": 17, "categoryName": "Soap", "parentId": 16},
+            {"id": 18, "categoryName": "Dettol", "parentId": 17},
+            {"id": 19, "categoryName": "150g dettol", "parentId": 18}
+        ];
+    */
 
     try {
         const value = localStorage.getItem("credential");
@@ -209,18 +216,18 @@
 
     function showUserSidebarOption() {
         Ajax.get("/Categories/getAll")
-            .then(response=>{
+            .then(response => {
                 console.log(response);
-                if (response.content==null){
+                if (response.content == null) {
                     showInfoToast("Category list is empty.")
-                }else {
+                } else {
                     /*SET CATEGORY DYNAMICALLY FROM API RESPONSE*/
                     let tree = buildCategoryTree(response.content);
                     let sidebarHtml = renderCategoryTree(tree);
                     $("#sideBar").append(sidebarHtml);
                 }
-            }).catch(error=>{
-            console.error("Something went wrong during call get all category API: "+error)
+            }).catch(error => {
+            console.error("Something went wrong during call get all category API: " + error)
             showErrorToast(error)
         })
     }

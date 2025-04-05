@@ -22,7 +22,7 @@ public interface CategoriesRepository extends JpaRepository<CategoriesEntity,Lon
     List<CategoriesEntity> findByParentIdAndStatus(Long parentId, Integer status);
     @Query(value = "select c.name as categoryName,\n" +
             "       p.name as productName,\n" +
-            "       p.description as Description,\n" +
+            "       p.description as description,\n" +
             "       p.price,\n" +
             "       p.image_url as imageUrl,\n" +
             "       p.stock,\n" +

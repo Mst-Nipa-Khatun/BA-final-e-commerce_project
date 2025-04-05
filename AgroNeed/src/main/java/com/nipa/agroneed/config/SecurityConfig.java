@@ -62,7 +62,9 @@ public class SecurityConfig {
                         .requestMatchers("/login", "/pages/**", "/error", "/register",
                                 "/webjars/**", "/css/**", "/images/**", "/favicon.ico",
                                 "/favicon.png", "/shared/**", "/webjars/AdminLTE/**",
-                                "/Categories/getAll").permitAll()
+                                "/Categories/getAll",
+                                "/Products/create"//todo will need to authenticated dynamically
+                        ).permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthAndCookieFilter, UsernamePasswordAuthenticationFilter.class);//added jwt token authentication filter

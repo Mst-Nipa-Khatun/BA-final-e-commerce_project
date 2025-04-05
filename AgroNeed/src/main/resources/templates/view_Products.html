@@ -31,7 +31,7 @@
 
     function getAllProducts() {
 
-        Ajax.get("/Products/getAll",null,null)
+        Ajax.get("/Products/getAll",null,null,true)
             .then(response=>{
                 console.log(response);
                 if(response.content===null){

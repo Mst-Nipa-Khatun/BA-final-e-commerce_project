@@ -52,7 +52,7 @@ public class ProductsServiceImpl implements ProductsService {
 
         // Define file path
         String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename()
-                .replace(" ","");
+                .replace(" ", "");
         String filePath = directoryPath + "/" + fileName;
         Path path = Paths.get(filePath);
 
@@ -60,11 +60,18 @@ public class ProductsServiceImpl implements ProductsService {
         Files.write(path, file.getBytes());
 
 
-
-
         CategoriesEntity categories = categoriesRepository.findByIdAndStatus(selectedProductsDto.getSelectedCategoryId(), 1);
         if (categories == null) {
             return ResponseBuilder.getFailResponse(HttpStatus.BAD_REQUEST, null, "Categories Id not found");
+        }
+
+        List<CategoriesEntity> categoriesEntities =
+                categoriesRepository.findByParentIdAndStatus(selectedProductsDto.getSelectedCategoryId(), 1);
+
+        if (!categoriesEntities.isEmpty()) {
+            return ResponseBuilder.getFailResponse(HttpStatus.CONFLICT, null,
+                    "This selectedCategoryId have a sub category ,you don't add any products");
+
         }
         ProductsEntity products = productsRepository.findByNameAndStatus(selectedProductsDto.getName(), 1);
         if (products == null) {
@@ -74,7 +81,8 @@ public class ProductsServiceImpl implements ProductsService {
             products.setPrice(selectedProductsDto.getPrice());
             products.setStatus(1);
             products.setStock(selectedProductsDto.getStock());
-            products.setImageUrl("/images/"+fileName);
+            products.setImageUrl("/images/" + fileName);
+
             ProductsEntity savedProducts = productsRepository.save(products);
 
 
@@ -86,14 +94,16 @@ public class ProductsServiceImpl implements ProductsService {
             return ResponseBuilder.getSuccessResponse(HttpStatus.CREATED, null,
                     "Successfully added products");
         }
+
+
         return ResponseBuilder.getFailResponse(HttpStatus.BAD_REQUEST, null, "Product already exists");
     }
 
     @Override
     public Response getAllProducts() {
-        List<ViewProductsDetailsProjection> productsList=productsRepository.findByAllProducts();
+        List<ViewProductsDetailsProjection> productsList = productsRepository.findByAllProducts();
         if (!productsList.isEmpty()) {
-            return ResponseBuilder.getSuccessResponse(HttpStatus.OK,productsList,"Successfully retrieved products");
+            return ResponseBuilder.getSuccessResponse(HttpStatus.OK, productsList, "Successfully retrieved products");
         }
         return ResponseBuilder.getFailResponse(HttpStatus.BAD_REQUEST, null, "No products found");
     }

@@ -16,7 +16,7 @@
     <div class="container mt-4">
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4" th:if="${products != null}">
             <div class="col" th:each="product : ${products}">
-                <div class="card productIdShow h-100 border-0 text-center"  th:attr="data-id=${product.productId}">
+                <div class="card h-100 border-0 text-center">
                     <!-- Product Image -->
                     <img th:src="${product.imageUrl}" alt="Product Image"
                          class="card-img-top p-3"
@@ -24,24 +24,17 @@
 
 
                   <div class="card-body text-center p-2">
-
-                    <h4 th:text="${product.productName}" class="fw-normal text-dark mb-1"
-                        style="min-height: 50px;"></h4>
-
-
+                    <h3 th:text="${product.productName}" class="fw-normal text-dark mb-1"
+                        style="min-height: 50px;"></h3>
                     <p th:text="${product.description}" class="text-danger fw-bold fs-5 mb-1"></p>
-
-
                     <p th:text="'৳' + ${product.price}" class="text-muted small mb-1"></p>
-
-
                     <p th:text="'Stock: ' + ${product.stock}" class="text-muted small"></p>
                   </div>
 
                   <!-- Add to Bag Button -->
                     <div class="card-footer bg-transparent border-0 px-2 pb-3">
-                        <button class="btn w-100  text-danger fw-semibold border" style="background-color: #fff;"
-                               >
+                        <button class="btn w-100 add-to-cart-btn text-danger fw-semibold border" style="background-color: #fff;"
+                                th:attr="data-id=${product.productId}">
                             <i class="bi bi-lightning-charge-fill me-1" ></i> Add to Cart
                         </button>
                     </div>
@@ -56,10 +49,10 @@
 
 <script>
     $(document).ready(function () {
-        $(".productIdShow").on("click", function () {
+        $(".add-to-cart-btn").on("click", function () {
             let productId = $(this).data("id");
             console.log("Product ID:", productId);
-            showSuccessToast("Product Id:" +productId)
+            showSuccessToast("Product Id:" +productId);
         });
     });
 </script>

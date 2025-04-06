@@ -63,7 +63,7 @@
 
         $(".submit").click(function (event) {
             event.preventDefault();
-//$(".submit").clear();
+
             let validationOK = submitCategoryValidation();
             if (validationOK) {
                 let requestBody=  {
@@ -86,6 +86,7 @@
                         console.log(response);
                         toastr.success(response.message);
                         getAllCategory();
+                        //$(".submit").clear();
                     }).catch(error=>{
                     console.log(error)
                     showErrorToast("Error:",error.message);

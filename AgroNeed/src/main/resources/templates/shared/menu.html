@@ -17,7 +17,6 @@
 <!-- Main Sidebar Container -->
 <aside class="main-sidebar sidebar-dark-primary elevation-4" xmlns:th="http://www.thymeleaf.org"
        xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
-    <!-- Brand Logo -->
     <a class="brand-link" href="/">
         <img alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
              src="/webjars/AdminLTE/3.2.0/dist/img/AdminLTELogo.png"
@@ -25,9 +24,7 @@
         <span class="brand-text font-weight-light">AgroNeed</span>
     </a>
 
-    <!-- Sidebar -->
     <div class="sidebar">
-        <!-- Sidebar user panel (optional) -->
         <div style="display: none !important;" class="currentUserNamePortion user-panel mt-3 pb-3 mb-3 d-flex">
             <div class="image">
                 <img alt="User Image" class="img-circle elevation-2"
@@ -39,14 +36,12 @@
                 </a>
             </div>
         </div>
-        <!-- Sidebar Menu -->
         <nav id="sideBar" class="mt-2">
 
         </nav>
-        <!-- /.sidebar-menu -->
     </div>
-    <!-- /.sidebar -->
 </aside>
+
 
 <form id="hiddenForm" action="/pages/currentProduct" method="get">
     <input type="hidden" name="categoryId" id="categoryId"/>
@@ -69,7 +64,11 @@
     });
     $(document).on('click', '#sideBar li.nav-option > a', function (e) {
         e.preventDefault();
-
+        const hasChildNavOption = $(this).closest('li.nav-option');
+        if (hasChildNavOption.hasClass("has-treeview")) {
+            //If child category is present then only expand treeview
+            return
+        }
         // Get only the clicked <li> (not the parents)
         const li = $(this).closest('li.nav-item');
 
@@ -80,9 +79,8 @@
         const categoryId = li.data('id');
         $("#categoryId").val(categoryId);
         $("#hiddenForm").submit();
-
-
     });
+
 
     let adminSideBarOption = ` <ul  class="nav nav-pills nav-sidebar flex-column" data-accordion="false" data-widget="treeview" role="menu">
 

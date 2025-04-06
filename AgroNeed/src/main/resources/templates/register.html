@@ -91,13 +91,13 @@
             showErrorToast("Password is required");
             return false;
         }
+
         let requestBody = {
             "username": username,
             "phone": phone,
             "password": password
 
         }
-
 
         $.ajax({
             url: STRINGS.API_BASE_URL + "/users/create",
@@ -112,7 +112,7 @@
 
                 if (response.statusCode === 201) {
                     showSuccessToast(response.message);
-                    //After successful registration wait 2 minutes for show success message then move to login page
+                    //After successful registration wait 2 sec for show success message then move to login page
                     setTimeout(function () {
                         $("#loginPage").submit();
                     }, 2000)

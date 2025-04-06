@@ -16,32 +16,33 @@
     <div class="container mt-4">
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4" th:if="${products != null}">
             <div class="col" th:each="product : ${products}">
-                <div class="card h-100 border-0 text-center">
+                <div class="card productIdShow h-100 border-0 text-center"  th:attr="data-id=${product.productId}">
                     <!-- Product Image -->
                     <img th:src="${product.imageUrl}" alt="Product Image"
                          class="card-img-top p-3"
                          style="height: 200px; object-fit: contain;"/>
 
-                    <!-- Product Info -->
+
                   <div class="card-body text-center p-2">
-                    <!-- Product Title -->
+
                     <h4 th:text="${product.productName}" class="fw-normal text-dark mb-1"
                         style="min-height: 50px;"></h4>
 
-                    <!-- Product Description -->
+
                     <p th:text="${product.description}" class="text-danger fw-bold fs-5 mb-1"></p>
 
-                    <!-- Product Price -->
+
                     <p th:text="'৳' + ${product.price}" class="text-muted small mb-1"></p>
 
-                    <!-- Product Stock -->
+
                     <p th:text="'Stock: ' + ${product.stock}" class="text-muted small"></p>
                   </div>
 
                   <!-- Add to Bag Button -->
                     <div class="card-footer bg-transparent border-0 px-2 pb-3">
-                        <button class="btn w-100 text-danger fw-semibold border" style="background-color: #fff;">
-                            <i class="bi bi-lightning-charge-fill me-1"></i> Add to Cart
+                        <button class="btn w-100  text-danger fw-semibold border" style="background-color: #fff;"
+                               >
+                            <i class="bi bi-lightning-charge-fill me-1" ></i> Add to Cart
                         </button>
                     </div>
                 </div>
@@ -53,4 +54,13 @@
 </body>
 </html>
 
+<script>
+    $(document).ready(function () {
+        $(".productIdShow").on("click", function () {
+            let productId = $(this).data("id");
+            console.log("Product ID:", productId);
+            showSuccessToast("Product Id:" +productId)
+        });
+    });
+</script>
 

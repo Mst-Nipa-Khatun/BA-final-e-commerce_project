@@ -54,7 +54,7 @@
             let productId = $(this).data("id");
             let quantity = 1;
 
-            let credential = window.getCredential?.();
+            let credential = window.getCredential();
 
             if (!credential || !credential.content || !credential.content.userId) {
                 console.warn("User not logged in — redirecting...");

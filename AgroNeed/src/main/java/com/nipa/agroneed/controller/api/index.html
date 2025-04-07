@@ -143,14 +143,14 @@
         cart.forEach((item, index) => {
             const div = document.createElement('div');
             div.className = 'cart-item';
-            div.innerHTML = `
-          <span>${item.name}</span>
-          <span>৳${item.price} <button onclick="removeFromCart(${index})" style="color:red;">✕</button></span>
-        `;
+            div.innerHTML =
+                <span>${item.name}</span>
+            <span>৳${item.price} <button onclick="removeFromCart(${index})" style="color:red;">✕</button></span>
+            ;
             cartItemsContainer.appendChild(div);
         });
 
-        cartSummary.textContent = `${totalItems} | ৳${totalPrice}`;
+        cartSummary.textContent = ${totalItems} | ৳${totalPrice};
     }
 
     function addToCart(name, price) {

@@ -62,8 +62,7 @@
 
     window.getCredential = function (){
         try {
-            const value = localStorage.getItem("credential");//userid to json.stringify data akare jokhon login hocche cookie te thakche?  seta kibhabe bojhla?ami jokhon login korchi obbosi amr id ase,oi token moddhei....ei toen ta lgin korar pore kothi paba ?amr appli jonno loaclstorage ase..kier localstorage e ase ?server name ta ki server er?chrome...chorome er  kothi thake ?application localstr e also for 24 hous cookie tew....tumi je getCredential theke data nisso se method kothi atheke data dicsse tomake?getItem from localstroarge...ami jodi boli ekhon amake code sara sei locl storage dekhaw tahole dekhate parba ?
-            //oi url ei to amr detals ase otai to custom kore save,get kora hoche...
+            const value = localStorage.getItem("credential");
             return value ? JSON.parse(value) : null;
         } catch (e) {
             console.error("Error parsing JSON from localStorage", e);

@@ -23,4 +23,12 @@ public class ShoppingCartController {
     public Response createShoppingCart(@RequestBody ShoppingCartDto shoppingCartDto) {
         return shoppingCartService.createShoppingCart(shoppingCartDto);
     }
+  /*  @Secured("ROLE_USER")
+    @PostMapping(UrlConstraint.ShoppingCart.CREATE)
+    public Response createShoppingCart(@RequestBody ShoppingCartDto shoppingCartDto,
+                                       @AuthenticationPrincipal UserPrincipal userDetails) {
+        shoppingCartDto.setUserId(userDetails.getId());
+        return shoppingCartService.createShoppingCart(shoppingCartDto);
+    }
+*/
 }

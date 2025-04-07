@@ -47,13 +47,44 @@
 </body>
 </html>
 
+
 <script>
     $(document).ready(function () {
         $(".add-to-cart-btn").on("click", function () {
             let productId = $(this).data("id");
-            console.log("Product ID:", productId);
-            showSuccessToast("Product Id:" +productId);
+            let quantity = 1;
+
+            let credential = window.getCredential?.();
+
+            if (!credential || !credential.content || !credential.content.userId) {
+                console.warn("User not logged in — redirecting...");
+                window.location.href = "/login";
+                return;
+            }
+
+            let userId = credential.content.userId;
+
+            let requestBody = {
+                userId: userId,
+                productId: productId,
+                quantity: quantity
+            };
+
+            Ajax.post("/shoppingCart/create", requestBody, null, true)
+                .then(response => {
+                    toastr.success(response.message);
+                })
+                .catch(error => {
+                    console.log("Error adding to cart:", error);
+                    if (error.status === 401 || error.status === 403) {
+                        window.location.href = "/login";
+                    } else {
+                        showErrorToast("Error: " + error.message);
+                    }
+                });
         });
     });
+
 </script>
+
 

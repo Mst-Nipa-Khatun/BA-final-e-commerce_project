@@ -55,6 +55,6 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         shoppingCart.setProductId(shoppingCartDto.getProductId());
         shoppingCart.setQuantity(shoppingCartDto.getQuantity());
         ShoppingCartEntity savedCart = shoppingCartRepository.save(shoppingCart);
-        return ResponseBuilder.getSuccessResponse(HttpStatus.CREATED, savedCart, "Shopping cart created");
+        return ResponseBuilder.getSuccessResponse(HttpStatus.CREATED, savedCart, "Products added in cart");
     }
 }

@@ -54,6 +54,8 @@ public class AuthService {
                     .map(Role::getName).collect(Collectors.toList()));
             loginResponseDto.setToken(jwtTokenProvider.generateToken(authentication, httpServletRequest));
             loginResponseDto.setUsername(user.getName());
+            loginResponseDto.setUserId(user.getId());
+
 
             Cookie cookie = new Cookie(SecurityConfig.COOKIES_JWT_TOKEN_KEY, loginResponseDto.getToken());
             //cookie.setHttpOnly(true);//The HttpOnly flag makes the cookie inaccessible to JavaScript running in the browser, which helps mitigate the risk of cross-site scripting (XSS) attacks.

@@ -3,6 +3,7 @@ package com.nipa.agroneed.service.Impl;
 import com.nipa.agroneed.dto.IncrementDecrementShoppingCartDto;
 import com.nipa.agroneed.dto.Response;
 import com.nipa.agroneed.dto.ShoppingCartDto;
+import com.nipa.agroneed.dto.ShoppingCartProjection;
 import com.nipa.agroneed.entity.ProductsEntity;
 import com.nipa.agroneed.entity.ShoppingCartEntity;
 import com.nipa.agroneed.entity.User;
@@ -13,6 +14,9 @@ import com.nipa.agroneed.service.ShoppingCartService;
 import com.nipa.agroneed.utils.ResponseBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class ShoppingCartServiceImpl implements ShoppingCartService {
@@ -97,9 +101,15 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
         return ResponseBuilder.getFailResponse(HttpStatus.CREATED, null, "products and user not found in cart");
     }
-    //first check korbo product(findByProductId)and user ase kina taw check korbo diye ase kina
-    //then jodi product null hoy return fail
-    //r jodi product thake tahole kaj hobe shopping cart db(all check korbo) e koyta rpoduct ase ,ja ase tar stahe quantity add hobe or remove hobe
-    //er jonno ekta validation hobe.
+
+    @Override
+    public Response getAllShoppingCart() {
+        List<ShoppingCartProjection> shoppingCartEntities=shoppingCartRepository.findAllShoppingCart();
+        if(!shoppingCartEntities.isEmpty()){
+           return ResponseBuilder.getSuccessResponse(HttpStatus.OK, shoppingCartEntities, "All shopping cart found");
+        }
+        return ResponseBuilder.getFailResponse(HttpStatus.OK, null, "No shopping cart found");
+    }
+
 
 }

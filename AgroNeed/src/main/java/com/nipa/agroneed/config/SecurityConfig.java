@@ -62,7 +62,7 @@ public class SecurityConfig {
                         .requestMatchers("/login", "/pages/**", "/error", "/register",
                                 "/webjars/**", "/css/**", "/images/**", "/favicon.ico",
                                 "/favicon.png", "/shared/**", "/webjars/AdminLTE/**",
-                                "/Categories/getAll","/users/create",
+                                "/Categories/getAll","/users/create","/shoppingCart","/shoppingCart/getAll",
                                 "/Products/create"//todo will need to authenticated dynamically
                         ).permitAll()
                         .anyRequest().authenticated()

@@ -21,17 +21,13 @@ public class ShoppingCartController {
     public Response createShoppingCart(@RequestBody ShoppingCartDto shoppingCartDto) {
         return shoppingCartService.createShoppingCart(shoppingCartDto);
     }
-  /*  @Secured("ROLE_USER")
-    @PostMapping(UrlConstraint.ShoppingCart.CREATE)
-    public Response createShoppingCart(@RequestBody ShoppingCartDto shoppingCartDto,
-                                       @AuthenticationPrincipal UserPrincipal userDetails) {
-        shoppingCartDto.setUserId(userDetails.getId());
-        return shoppingCartService.createShoppingCart(shoppingCartDto);
-    }
-*/
 
     @PostMapping(UrlConstraint.ShoppingCart.INCREMENT_DECREMENT)
     public Response incrementDecrementShoppingCart(@RequestBody IncrementDecrementShoppingCartDto incrementDecrementShoppingCartDto) {
         return shoppingCartService.incrementDecrementShoppingCart(incrementDecrementShoppingCartDto);
+    }
+    @GetMapping(UrlConstraint.ShoppingCart.GET_ALL)
+    public Response getAllShoppingCart() {
+        return shoppingCartService.getAllShoppingCart();
     }
 }

@@ -7,4 +7,5 @@ import com.nipa.agroneed.dto.ShoppingCartDto;
 public interface ShoppingCartService {
     Response createShoppingCart(ShoppingCartDto shoppingCartDto);
     Response incrementDecrementShoppingCart(IncrementDecrementShoppingCartDto incrementDecrementShoppingCartDto);
+    Response getAllShoppingCart();
 }

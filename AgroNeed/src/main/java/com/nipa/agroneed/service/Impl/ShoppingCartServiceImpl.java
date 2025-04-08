@@ -1,5 +1,6 @@
 package com.nipa.agroneed.service.Impl;
 
+import com.nipa.agroneed.dto.IncrementDecrementShoppingCartDto;
 import com.nipa.agroneed.dto.Response;
 import com.nipa.agroneed.dto.ShoppingCartDto;
 import com.nipa.agroneed.entity.ProductsEntity;
@@ -57,4 +58,48 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         ShoppingCartEntity savedCart = shoppingCartRepository.save(shoppingCart);
         return ResponseBuilder.getSuccessResponse(HttpStatus.CREATED, savedCart, "Products added in cart");
     }
+
+    @Override
+    public Response incrementDecrementShoppingCart(IncrementDecrementShoppingCartDto incrementDecrementShoppingCartDto) {
+        User user = userRepository.findByIdAndStatus(incrementDecrementShoppingCartDto.getUserId(), 1);
+        if (user == null) {
+            return ResponseBuilder.getFailResponse(HttpStatus.BAD_REQUEST, null, "User not found");
+        }
+        ProductsEntity products = productsRepository.findByIdAndStatus(incrementDecrementShoppingCartDto.getProductId(), 1);
+        if (products == null) {
+            return ResponseBuilder.getFailResponse(HttpStatus.BAD_REQUEST, null, "Product not found");
+        }
+        Integer stock = products.getStock();
+        if (!(stock != null && stock > 0)) {
+            return ResponseBuilder.getFailResponse(HttpStatus.BAD_REQUEST,
+                    null, "Stock not enough");
+        }
+        ShoppingCartEntity shoppingCart =
+                shoppingCartRepository.findByUserIdAndProductIdAndStatus(incrementDecrementShoppingCartDto.getUserId(),
+                        incrementDecrementShoppingCartDto.getProductId(), 1);
+
+        if (shoppingCart != null) {
+            if (incrementDecrementShoppingCartDto.getIsIncrement()) {
+                if (shoppingCart.getQuantity() < stock) {
+                    shoppingCart.setQuantity(shoppingCart.getQuantity() + 1);
+                    ShoppingCartEntity savedCart = shoppingCartRepository.save(shoppingCart);
+                    return ResponseBuilder.getSuccessResponse(HttpStatus.OK, savedCart, "Products Incremet in cart");
+                }
+            } else {
+                if (shoppingCart.getQuantity() > 0) {
+                    shoppingCart.setQuantity(shoppingCart.getQuantity() - 1);
+                    ShoppingCartEntity savedCart = shoppingCartRepository.save(shoppingCart);
+                    return ResponseBuilder.getSuccessResponse(HttpStatus.OK, savedCart, "Products decrement in cart");
+
+                }
+            }
+        }
+
+        return ResponseBuilder.getFailResponse(HttpStatus.CREATED, null, "products and user not found in cart");
+    }
+    //first check korbo product(findByProductId)and user ase kina taw check korbo diye ase kina
+    //then jodi product null hoy return fail
+    //r jodi product thake tahole kaj hobe shopping cart db(all check korbo) e koyta rpoduct ase ,ja ase tar stahe quantity add hobe or remove hobe
+    //er jonno ekta validation hobe.
+
 }

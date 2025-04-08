@@ -28,7 +28,6 @@ public class AuthController {
     public Response login(@RequestBody LoginDto loginDto, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
         return authService.login(loginDto, httpServletRequest, httpServletResponse);
     }
-
     @PostMapping("/registerUser")
     public Response register(@RequestBody UserDto userDto) {
         return authService.register(userDto);

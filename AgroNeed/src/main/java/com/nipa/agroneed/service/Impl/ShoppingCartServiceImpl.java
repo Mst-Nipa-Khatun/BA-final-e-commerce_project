@@ -42,16 +42,11 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         }
         Integer stock = products.getStock();
         if (!(stock != null && stock > 0)) {
-            return ResponseBuilder.getFailResponse(HttpStatus.BAD_REQUEST,
-                    null, "Stock not enough");
+            return ResponseBuilder.getFailResponse(HttpStatus.BAD_REQUEST, null, "Stock not enough");
         }
-        ShoppingCartEntity shoppingCart =
-                shoppingCartRepository.findByUserIdAndProductIdAndStatus(shoppingCartDto.getUserId(),
-                        shoppingCartDto.getProductId(), 1);
+        ShoppingCartEntity shoppingCart = shoppingCartRepository.findByUserIdAndProductIdAndStatus(shoppingCartDto.getUserId(), shoppingCartDto.getProductId(), 1);
         if (shoppingCart != null) {
-            return ResponseBuilder.getFailResponse(HttpStatus.CONFLICT, null,
-                    "Product already exists," +
-                            "you increase or decrease your products");
+            return ResponseBuilder.getFailResponse(HttpStatus.CONFLICT, null, "Product already exists," + "you increase or decrease your products");
 
         }
         shoppingCart = new ShoppingCartEntity();
@@ -75,12 +70,9 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         }
         Integer stock = products.getStock();
         if (!(stock != null && stock > 0)) {
-            return ResponseBuilder.getFailResponse(HttpStatus.BAD_REQUEST,
-                    null, "Stock not enough");
+            return ResponseBuilder.getFailResponse(HttpStatus.BAD_REQUEST, null, "Stock not enough");
         }
-        ShoppingCartEntity shoppingCart =
-                shoppingCartRepository.findByUserIdAndProductIdAndStatus(incrementDecrementShoppingCartDto.getUserId(),
-                        incrementDecrementShoppingCartDto.getProductId(), 1);
+        ShoppingCartEntity shoppingCart = shoppingCartRepository.findByUserIdAndProductIdAndStatus(incrementDecrementShoppingCartDto.getUserId(), incrementDecrementShoppingCartDto.getProductId(), 1);
 
         if (shoppingCart != null) {
             if (incrementDecrementShoppingCartDto.getIsIncrement()) {
@@ -89,6 +81,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
                     ShoppingCartEntity savedCart = shoppingCartRepository.save(shoppingCart);
                     return ResponseBuilder.getSuccessResponse(HttpStatus.OK, savedCart, "Products Incremet in cart");
                 }
+                return ResponseBuilder.getFailResponse(HttpStatus.NOT_ACCEPTABLE, null, "Out of stok");
             } else {
                 if (shoppingCart.getQuantity() > 0) {
                     shoppingCart.setQuantity(shoppingCart.getQuantity() - 1);
@@ -96,6 +89,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
                     return ResponseBuilder.getSuccessResponse(HttpStatus.OK, savedCart, "Products decrement in cart");
 
                 }
+                return ResponseBuilder.getFailResponse(HttpStatus.NOT_ACCEPTABLE, null, "At least 1 product is required");
             }
         }
 
@@ -104,9 +98,9 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public Response getAllShoppingCart() {
-        List<ShoppingCartProjection> shoppingCartEntities=shoppingCartRepository.findAllShoppingCart();
-        if(!shoppingCartEntities.isEmpty()){
-           return ResponseBuilder.getSuccessResponse(HttpStatus.OK, shoppingCartEntities, "All shopping cart found");
+        List<ShoppingCartProjection> shoppingCartEntities = shoppingCartRepository.findAllShoppingCart();
+        if (!shoppingCartEntities.isEmpty()) {
+            return ResponseBuilder.getSuccessResponse(HttpStatus.OK, shoppingCartEntities, "All shopping cart found");
         }
         return ResponseBuilder.getFailResponse(HttpStatus.OK, null, "No shopping cart found");
     }

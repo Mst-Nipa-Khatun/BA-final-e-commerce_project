@@ -1,9 +1,6 @@
 package com.nipa.agroneed.service.Impl;
 
-import com.nipa.agroneed.dto.IncrementDecrementShoppingCartDto;
-import com.nipa.agroneed.dto.Response;
-import com.nipa.agroneed.dto.ShoppingCartDto;
-import com.nipa.agroneed.dto.ShoppingCartProjection;
+import com.nipa.agroneed.dto.*;
 import com.nipa.agroneed.entity.ProductsEntity;
 import com.nipa.agroneed.entity.ShoppingCartEntity;
 import com.nipa.agroneed.entity.User;
@@ -98,12 +95,35 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public Response getAllShoppingCart() {
-        List<ShoppingCartProjection> shoppingCartEntities = shoppingCartRepository.findAllShoppingCart();
+        List<ShoppingCartProjection> shoppingCartEntities = shoppingCartRepository.findAllShoppingCart(1);
         if (!shoppingCartEntities.isEmpty()) {
             return ResponseBuilder.getSuccessResponse(HttpStatus.OK, shoppingCartEntities, "All shopping cart found");
         }
         return ResponseBuilder.getFailResponse(HttpStatus.OK, null, "No shopping cart found");
     }
+
+    @Override
+    public Response removeRow(CrossCartDto crossCartDto) {
+        ShoppingCartEntity shoppingCart = shoppingCartRepository.findByUserIdAndProductIdAndStatus(crossCartDto.getUserId(), crossCartDto.getProductId(), 1);
+        if (shoppingCart != null) {
+            shoppingCart.setStatus(3);
+            ShoppingCartEntity savedCart = shoppingCartRepository.save(shoppingCart);
+            return ResponseBuilder.getSuccessResponse(HttpStatus.OK, savedCart, "Product removed from cart");
+        }
+        return ResponseBuilder.getFailResponse(HttpStatus.NOT_FOUND, null, "Product not found");
+
+    }
+/*
+    @Override
+    public Response removeRow(Long productId) {
+        ShoppingCartEntity entity=shoppingCartRepository.findByProductIdAndStatus(productId,1);
+        if(entity !=null){
+            entity.setStatus(3);
+            shoppingCartRepository.save(entity);
+            return ResponseBuilder.getSuccessResponse(HttpStatus.OK, null, "Product removed");
+        }
+        return ResponseBuilder.getFailResponse(HttpStatus.NOT_FOUND, null, "Product not found");
+    }*/
 
 
 }

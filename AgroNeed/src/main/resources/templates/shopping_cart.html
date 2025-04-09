@@ -19,7 +19,7 @@
 
                 <!-- Cart Table -->
                 <div class="table-responsive">
-                    <table class="cart-table align-middle">
+                    <table class="cart-table align-middle table-striped">
                         <thead>
                         <tr>
                             <th>#</th>
@@ -113,8 +113,66 @@
                         showErrorToast("Error: " + error.message);
                     }
                 });
+        });
+
+        $(document).on("click", ".crossbtn", function (){
+            let productId = $(this).data("id");
+            let $row = $(this).closest('tr');
 
 
+            let credential = window.getCredential();
+
+            if (!credential || !credential.content || !credential.content.userId) {
+                console.warn("User not logged in — redirecting...");
+                window.location.href = "/login";
+                return;
+            }
+            let userId = credential.content.userId;
+            let requestBody = {
+                userId: userId,
+                productId: productId
+            };
+            Ajax.post("/shoppingCart/removeRow", requestBody, null, true)
+                .then(response => {
+                    if (response.statusCode !== 200) {
+                        showWarningToast(response.message);
+                        return;
+                    }
+
+                   $('.cart-table').DataTable().row($row).remove().draw(); // remove row from DataTable
+
+                    if ($.fn.DataTable.isDataTable('.cart-table')) {
+                        $('.cart-table').DataTable().destroy();
+                    }
+                    $('.cart-table').DataTable({
+                        // Default page length (how many rows shown initially)
+                        pageLength: 5,
+                        // Dropdown for selecting number of rows per page
+                        lengthMenu: [
+                            [5, 10, 25, 50, -1],       // Values
+                            [5, 10, 25, 50, 'All']     // Labels shown in dropdown
+                        ],
+                        columnDefs: [
+                            {
+                                targets: 0, // assuming first column is for row numbers
+                                render: function (data, type, row, meta) {
+                                    return meta.row + 1;
+                                }
+                            }
+                        ]
+                    });
+
+
+                    showSuccessToast("Product removed from cart");
+                })
+                .catch(error => {
+                    console.log("Error adding to cart:", error);
+                    if (error.status === 401 || error.status === 403) {
+                        window.location.href = "/login";
+                    } else {
+                        showErrorToast("Error: " + error.message);
+                    }
+                });
         });
 
         function getAllShoppingCart() {
@@ -139,7 +197,7 @@
                             <td>` + current.description + `</td>
                             <td>
                             <div class="row">
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                              </div>
                             <div class="col-md-2">
                                  <button class="btn incrementDecrementBtn btn-sm btn-success me-1"
@@ -154,8 +212,14 @@
                                         data-isincrement="false"
                                         data-id="` + current.productId + `">-</button>
                              </div>
-                             <div class="col-md-3">
+                              <div class="col-md-2">
+
                              </div>
+                              <div class="col-md-2">
+                                <button class="btn crossbtn btn-sm btn-secondary"
+                                        data-crossbtn="false" data-id="` + current.productId + `">x</button>
+                             </div>
+
 
                              </div>
 
@@ -169,6 +233,14 @@
                             lengthMenu: [
                                 [5, 10, 25, 50, -1],       // Values
                                 [5, 10, 25, 50, 'All']     // Labels shown in dropdown
+                            ],
+                            columnDefs: [
+                                {
+                                    targets: 0, // assuming first column is for row numbers
+                                    render: function (data, type, row, meta) {
+                                        return meta.row + 1;
+                                    }
+                                }
                             ]
                         });
 

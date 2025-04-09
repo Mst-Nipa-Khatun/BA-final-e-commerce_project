@@ -31,6 +31,8 @@ public final class UrlConstraint {
         public static final String CREATE = "/create";
         public static final String GET_ALL = "/getAll";
         public static final String INCREMENT_DECREMENT = "/incrementDecrement";
+        public static final String REMOVE_ROW="/removeRow";
+        //public static final String REMOVE_ROW="/removeRow/{productId}";
 
     }
 }

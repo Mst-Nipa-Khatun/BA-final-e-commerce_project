@@ -1,5 +1,6 @@
 package com.nipa.agroneed.controller.api;
 
+import com.nipa.agroneed.dto.CrossCartDto;
 import com.nipa.agroneed.dto.IncrementDecrementShoppingCartDto;
 import com.nipa.agroneed.dto.Response;
 import com.nipa.agroneed.dto.ShoppingCartDto;
@@ -30,4 +31,12 @@ public class ShoppingCartController {
     public Response getAllShoppingCart() {
         return shoppingCartService.getAllShoppingCart();
     }
+    @PostMapping(UrlConstraint.ShoppingCart.REMOVE_ROW)
+    public Response removeRow(@RequestBody CrossCartDto crossCartDto){
+        return shoppingCartService.removeRow(crossCartDto);
+    }
+    /*@PostMapping(UrlConstraint.ShoppingCart.REMOVE_ROW)
+    public Response removeRow(@PathVariable("productId") Long productId){
+        return shoppingCartService.removeRow(productId);
+    }*/
 }

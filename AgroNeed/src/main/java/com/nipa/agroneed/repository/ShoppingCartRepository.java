@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public interface ShoppingCartRepository extends JpaRepository<ShoppingCartEntity, Long> {
     ShoppingCartEntity findByUserIdAndProductIdAndStatus(Long userId, Long productId, Integer status);
-    //ShoppingCartEntity findByProductIdAndStatus(Long productId, Integer status);
+    List<ShoppingCartEntity> findAllByUserIdAndStatus(Long userId, Integer status);
 
     @Query(value = "SELECT sc.id,p.name,sc.quantity,p.price,p.description,sc.product_id as productId\n" +
             "    from shopping_cart sc\n" +

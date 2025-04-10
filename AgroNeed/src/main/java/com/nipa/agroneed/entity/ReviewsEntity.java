@@ -10,9 +10,9 @@ import lombok.Data;
 @Table(name = "Reviews")
 public class ReviewsEntity extends BaseEntity {
     @Column(name = "user_id")
-    private Integer userId;
+    private Long userId;
     @Column(name = "product_id")
-    private Integer productId;
+    private Long productId;
     @Column(name = "rating")
     private Integer rating;
     @Column(name = "comment")

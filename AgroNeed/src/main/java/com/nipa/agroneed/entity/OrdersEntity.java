@@ -10,9 +10,13 @@ import lombok.Data;
 @Table(name = "Orders")
 public class OrdersEntity extends BaseEntity {
     @Column(name = "user_id")
-    private Integer userId;
+    private Long userId;
+
     @Column(name = "total_price")
     private Double totalPrice;
+
+    @Column(name = "numbers_of_products")
+    private Integer numberOfProducts;
 
     //status in enum
 

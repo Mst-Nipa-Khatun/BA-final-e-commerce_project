@@ -10,11 +10,11 @@ import lombok.Data;
 @Table(name = "Payments")
 public class PaymentsEntity extends BaseEntity {
     @Column(name = "order_id")
-    private Integer orderId;
+    private Long orderId;
     @Column(name = "user_id")
-    private Integer userId;
+    private Long userId;
     @Column(name = "payment_method")
-    private String paymentMethod; //what about enum
+    private Integer paymentMethod; //what about enum
     @Column(name = "amount")
     private Double amount;
 

@@ -12,9 +12,9 @@ import jakarta.persistence.Table;
 public class OrderItemsEntity extends BaseEntity {
 
     @Column(name = "order_id")
-    private Integer orderId;
+    private Long orderId;
     @Column(name = "product_id")
-    private Integer productId;
+    private Long productId;
     @Column(name = "quantity")
     private Integer quantity;
     @Column(name = "price")

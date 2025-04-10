@@ -88,6 +88,7 @@ CREATE TABLE Orders (
                         id INT PRIMARY KEY AUTO_INCREMENT,
                         user_id INT,
                         total_price DECIMAL(10,2),
+                        nummbers_of_products INT,
 --     status ENUM('pending', 'shipped', 'delivered', 'cancelled') DEFAULT 'pending',
                         status integer,
                         createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

@@ -50,7 +50,7 @@ public class CreateRunTimeUserTest {
         if (user == null) {
             user = new User();
             user.setCreatedBy("RunTimeUser");
-            user.setName("nipa khatun");
+            user.setName("Mst. Nipa khatun");
             user.setPasswordHash(passwordEncoder.encode(password));
             user.setPhone(phone);
             user.setStatus(1);

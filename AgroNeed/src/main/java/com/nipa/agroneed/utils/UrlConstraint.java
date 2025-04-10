@@ -33,6 +33,11 @@ public final class UrlConstraint {
         public static final String INCREMENT_DECREMENT = "/incrementDecrement";
         public static final String REMOVE_ROW="/removeRow";
         //public static final String REMOVE_ROW="/removeRow/{productId}";
-
     }
-}
+    public static class Orders {
+        public static final String ROOT = "/orders";
+        public static final String PLACE_ORDER = "/placeOrder";
+
+        public static final String GET_ALL = "/getAll";
+    }
+    }

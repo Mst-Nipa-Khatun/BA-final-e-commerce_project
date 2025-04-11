@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -94,21 +95,23 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Response getAllOrders() {
-        List<OrdersEntity> orders=orderRepository.findAllByStatus(1);
+        List<OrdersEntity> orders=orderRepository.findAll();
         if (!orders.isEmpty()) {
             return ResponseBuilder.getSuccessResponse(HttpStatus.OK, orders, "Orders found.");
         }
         return ResponseBuilder.getFailResponse(HttpStatus.BAD_REQUEST, null, "No orders found.");
     }
 
+    @Transactional
     @Override
     public Response updateOrder(UpdateOrderDto updateOrderDto) {
-        OrdersEntity orders=orderRepository.findByIdAndStatus(updateOrderDto.getOrderId(), 1);
-        if (orders == null) {
+        Optional<OrdersEntity> ordersOptional=orderRepository.findById(updateOrderDto.getOrderId());
+        if (!ordersOptional.isPresent()) {
             return ResponseBuilder.getFailResponse(HttpStatus.BAD_REQUEST, null, "No orders found.");
         }
+        OrdersEntity orders = ordersOptional.get();
         List<OrderItemsEntity> orderItems=
-                orderItemsRepository.findByOrderIdAndStatus(orders.getId(), 1);
+                orderItemsRepository.findByOrderId(orders.getId());
 
         if (orderItems.isEmpty()) {
             return ResponseBuilder.getFailResponse(HttpStatus.BAD_REQUEST, null, "No order items found.");

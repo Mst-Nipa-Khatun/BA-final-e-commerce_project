@@ -3,6 +3,7 @@ package com.nipa.agroneed.controller.api;
 
 import com.nipa.agroneed.dto.PlaceOrderDto;
 import com.nipa.agroneed.dto.Response;
+import com.nipa.agroneed.dto.UpdateOrderDto;
 import com.nipa.agroneed.service.OrderService;
 import com.nipa.agroneed.utils.UrlConstraint;
 import org.springframework.web.bind.annotation.*;
@@ -22,5 +23,9 @@ public class OrderController {
    @GetMapping(UrlConstraint.Orders.GET_ALL)
     public Response getAllOrders() {
         return orderService.getAllOrders();
+   }
+   @PostMapping(UrlConstraint.Orders.UPADATE_ORDER)
+    public Response updateOrder(@RequestBody UpdateOrderDto updateOrderDto){
+        return orderService.updateOrder(updateOrderDto);
    }
 }

@@ -2,6 +2,7 @@ package com.nipa.agroneed.service.Impl;
 
 import com.nipa.agroneed.dto.PlaceOrderDto;
 import com.nipa.agroneed.dto.Response;
+import com.nipa.agroneed.dto.UpdateOrderDto;
 import com.nipa.agroneed.entity.OrderItemsEntity;
 import com.nipa.agroneed.entity.OrdersEntity;
 import com.nipa.agroneed.entity.ProductsEntity;
@@ -98,6 +99,32 @@ public class OrderServiceImpl implements OrderService {
             return ResponseBuilder.getSuccessResponse(HttpStatus.OK, orders, "Orders found.");
         }
         return ResponseBuilder.getFailResponse(HttpStatus.BAD_REQUEST, null, "No orders found.");
+    }
+
+    @Override
+    public Response updateOrder(UpdateOrderDto updateOrderDto) {
+        OrdersEntity orders=orderRepository.findByIdAndStatus(updateOrderDto.getOrderId(), 1);
+        if (orders == null) {
+            return ResponseBuilder.getFailResponse(HttpStatus.BAD_REQUEST, null, "No orders found.");
+        }
+        List<OrderItemsEntity> orderItems=
+                orderItemsRepository.findByOrderIdAndStatus(orders.getId(), 1);
+
+        if (orderItems.isEmpty()) {
+            return ResponseBuilder.getFailResponse(HttpStatus.BAD_REQUEST, null, "No order items found.");
+        }
+
+        orders.setStatus(updateOrderDto.getOrderStatus());
+        OrdersEntity savedOrder=orderRepository.save(orders);
+
+        List<OrderItemsEntity> orderItemsEntities=new ArrayList<>();
+        for (OrderItemsEntity orderItem : orderItems) {
+            orderItem.setStatus(updateOrderDto.getOrderStatus());
+            orderItemsEntities.add(orderItem);
+        }
+        orderItemsRepository.saveAll(orderItemsEntities);
+
+        return ResponseBuilder.getSuccessResponse(HttpStatus.OK, savedOrder, "Order updated successfully.");
     }
 
 }

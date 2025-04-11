@@ -37,7 +37,7 @@ public final class UrlConstraint {
     public static class Orders {
         public static final String ROOT = "/orders";
         public static final String PLACE_ORDER = "/placeOrder";
-
         public static final String GET_ALL = "/getAll";
+        public static final String UPADATE_ORDER = "/ordersUpdate";
     }
     }

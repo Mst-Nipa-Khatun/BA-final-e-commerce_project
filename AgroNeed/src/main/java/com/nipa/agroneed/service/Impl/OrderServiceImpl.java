@@ -12,6 +12,7 @@ import com.nipa.agroneed.repository.ProductsRepository;
 import com.nipa.agroneed.repository.ShoppingCartRepository;
 import com.nipa.agroneed.service.OrderService;
 import com.nipa.agroneed.utils.ResponseBuilder;
+import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +33,7 @@ public class OrderServiceImpl implements OrderService {
         this.orderItemsRepository = orderItemsRepository;
     }
 
+    @Transactional
     @Override
     public Response placeOrder(PlaceOrderDto placeOrderDto) {
         List<ShoppingCartEntity> carts = shoppingCartRepository.findAllByUserIdAndStatus(placeOrderDto.getUserId(), 1);
@@ -46,10 +48,20 @@ public class OrderServiceImpl implements OrderService {
         for (ShoppingCartEntity cart : carts) {
             ProductsEntity product = productsRepository.findByIdAndStatus(cart.getProductId(), 1);
             if (product != null) {
+                if (product.getStock() < cart.getQuantity()) {
+                    return ResponseBuilder.getFailResponse(HttpStatus.NOT_ACCEPTABLE,
+                            null,product.getName() +" is out of stock. " +
+                                    "For continue this order you can remove the product then place order");
+                }
                 totalPrice += product.getPrice() * cart.getQuantity();
                 totalNumberOfProducts++;
+                //decrease the e-commerce company product count as we received the order
+                product.setStock(product.getStock() - cart.getQuantity());
+                productsRepository.save(product);
             }
+            cart.setStatus(4);//For make it received in shopping cart
         }
+        List<ShoppingCartEntity> updatedCarts = shoppingCartRepository.saveAll(carts); //akhon shooping cart e pick kora gulo 4 status
 
         OrdersEntity order = new OrdersEntity();
         order.setUserId(placeOrderDto.getUserId());
@@ -58,9 +70,6 @@ public class OrderServiceImpl implements OrderService {
         order.setNumberOfProducts(totalNumberOfProducts);
         OrdersEntity savedOrder = orderRepository.save(order);
 
-        carts.forEach(v ->
-                v.setStatus(4));
-        List<ShoppingCartEntity> updatedCarts = shoppingCartRepository.saveAll(carts); //akhon shooping cart e pick kora gulo 4 status
 
 
         List<OrderItemsEntity> orderItems = new ArrayList<>();

@@ -72,8 +72,8 @@
 
             Ajax.post("/shoppingCart/create", requestBody, null, true)
                 .then(response => {
-                   // toastr.success(response.message);
                     showSuccessToast(response.message);
+                    showShoppingCartCount();//For show product count in header icon
                 })
                 .catch(error => {
                     console.log("Error adding to cart:", error);
@@ -85,6 +85,35 @@
                 });
         });
     });
+
+    function showShoppingCartCount() {
+        let shoppingCartCountSelection = $(".shoppingCartCount");
+
+        let credential = window.getCredential();
+        if (!credential || !credential.content || !credential.content.userId) {
+            console.warn("User not logged in — redirecting...");
+            shoppingCartCountSelection.text(0);
+            return;
+        }
+
+        Ajax.get("/shoppingCart/getAll", null, null)
+            .then(response => {
+                console.log(response);
+                if (response.content == null) {
+                    shoppingCartCountSelection.text(0)
+                } else {
+                    let activeShoppingCartCount = response.content.length;
+                    shoppingCartCountSelection.text(activeShoppingCartCount)
+                }
+
+            }).catch(error => {
+            shoppingCartCountSelection.text(0)
+            console.log(error);
+            showErrorToast("Error " + error);
+        })
+    }
+
+
 </script>
 
 

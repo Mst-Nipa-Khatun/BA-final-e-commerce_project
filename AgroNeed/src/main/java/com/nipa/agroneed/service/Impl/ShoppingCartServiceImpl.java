@@ -113,17 +113,6 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         return ResponseBuilder.getFailResponse(HttpStatus.NOT_FOUND, null, "Product not found");
 
     }
-/*
-    @Override
-    public Response removeRow(Long productId) {
-        ShoppingCartEntity entity=shoppingCartRepository.findByProductIdAndStatus(productId,1);
-        if(entity !=null){
-            entity.setStatus(3);
-            shoppingCartRepository.save(entity);
-            return ResponseBuilder.getSuccessResponse(HttpStatus.OK, null, "Product removed");
-        }
-        return ResponseBuilder.getFailResponse(HttpStatus.NOT_FOUND, null, "Product not found");
-    }*/
 
 
 }

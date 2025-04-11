@@ -19,4 +19,8 @@ public class OrderController {
     public Response placeOrder(@RequestBody PlaceOrderDto placeOrderDto) {
         return orderService.placeOrder(placeOrderDto);
    }
+   @GetMapping(UrlConstraint.Orders.GET_ALL)
+    public Response getAllOrders() {
+        return orderService.getAllOrders();
+   }
 }

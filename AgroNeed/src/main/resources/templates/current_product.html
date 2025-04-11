@@ -72,8 +72,13 @@
 
             Ajax.post("/shoppingCart/create", requestBody, null, true)
                 .then(response => {
-                    showSuccessToast(response.message);
-                    showShoppingCartCount();//For show product count in header icon
+                    if(response.statusCode===201){
+                        //showSuccessToast(response.message);
+                        showShoppingCartCount();//For show product count in header icon
+                    }else {
+                        showWarningToast(response.message);
+                    }
+
                 })
                 .catch(error => {
                     console.log("Error adding to cart:", error);

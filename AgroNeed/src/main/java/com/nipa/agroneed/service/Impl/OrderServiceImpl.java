@@ -73,8 +73,6 @@ public class OrderServiceImpl implements OrderService {
         order.setNumberOfProducts(totalNumberOfProducts);
         OrdersEntity savedOrder = orderRepository.save(order);
 
-
-
         List<OrderItemsEntity> orderItems = new ArrayList<>();
         for (ShoppingCartEntity shoppingCartart : updatedCarts) {
             ProductsEntity product = productsRepository.findByIdAndStatus(shoppingCartart.getProductId(), 1);
@@ -91,6 +89,15 @@ public class OrderServiceImpl implements OrderService {
         orderItemsRepository.saveAll(orderItems);
 
         return ResponseBuilder.getSuccessResponse(HttpStatus.OK, savedOrder, "Order placed successfully.");
+    }
+
+    @Override
+    public Response getAllOrders() {
+        List<OrdersEntity> orders=orderRepository.findAllByStatus(1);
+        if (!orders.isEmpty()) {
+            return ResponseBuilder.getSuccessResponse(HttpStatus.OK, orders, "Orders found.");
+        }
+        return ResponseBuilder.getFailResponse(HttpStatus.BAD_REQUEST, null, "No orders found.");
     }
 
 }

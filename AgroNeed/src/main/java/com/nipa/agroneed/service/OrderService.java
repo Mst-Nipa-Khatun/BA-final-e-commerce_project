@@ -5,4 +5,5 @@ import com.nipa.agroneed.dto.Response;
 
 public interface OrderService {
     Response placeOrder(PlaceOrderDto placeOrderDto);
+    Response getAllOrders();
 }

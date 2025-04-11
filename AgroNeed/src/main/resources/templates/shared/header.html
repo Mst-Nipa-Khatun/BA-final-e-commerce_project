@@ -35,11 +35,19 @@
 
         </li>
         <li>
-        <li class="nav-item dropdown">
-            <a class="nav-link" style="color: red;font-size: medium;font-weight: bold" href="/login">
+        <li id="loginPortion" style="display: none" class="nav-item dropdown">
+            <a class="nav-link" style="color: red;font-size: medium;font-weight: bold"
+               href="/login">
                 <i class="fas fa-sign-in"></i>
                 Login
             </a>
+        </li>
+
+        <li id="logoutPortion" style="display: none;cursor: pointer" class="nav-item dropdown">
+            <p class="nav-link" style="color: red;font-size: medium;font-weight: bold">
+                <i class="fas fa-sign-in"></i>
+                Logout
+            </p>
         </li>
 
     </ul>
@@ -52,7 +60,37 @@
 
 <script defer>
     $(document).ready(function () {
-        showShoppingCartCount();
+
+        let credential = window.getCredential();
+        if (!credential || !credential.content || !credential.content.userId) {
+            console.warn("User not logged in — redirecting...");
+            $("#loginPortion").show();
+            return;
+        }
+
+        Ajax.validateToken(credential.content.token)
+            .then(response => {
+                console.log(response)
+                $("#logoutPortion").show();
+            }).catch(error => {
+            console.error(error)
+            window.location.href = "/login"
+        })
+
+
+        showShoppingCartCount();//For show shopping cart item count to header
+
+
+        $("#logoutPortion").click(function (event) {
+            event.preventDefault();
+            window.clearCredential();
+
+            $("#logoutPortion").hide();
+            $("#loginPortion").show();
+
+            window.location.reload();
+        })
+
         $(".shoppingCartIcon").click(function (event) {
             event.preventDefault();
 

@@ -45,29 +45,6 @@
     }
 
 
-
-
-
-    //############################################################ LOCAL STORAGE ################################################################
-    window.saveCredential = function (value){
-        try {
-            localStorage.setItem("credential", typeof value === "object" ? JSON.stringify(value) : value);
-        } catch (e) {
-            console.error("Error saving to localStorage", e);
-        }
-    }
-
-    window.getCredential = function (){
-        try {
-            const value = localStorage.getItem("credential");
-            return value ? JSON.parse(value) : null;
-        } catch (e) {
-            console.error("Error parsing JSON from localStorage", e);
-            return null;
-        }
-    }
-
-
     //############################################################ LOCAL STORAGE #######################################################################
 
     // Utility functions to handle credentials

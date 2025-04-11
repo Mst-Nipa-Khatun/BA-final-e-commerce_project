@@ -39,21 +39,25 @@
                 <!-- Delivery Address -->
                 <div class="mb-3">
                     <label for="address" class="form-label">Delivery Address</label>
-                    <input type="text" class="form-control" id="address" placeholder="Enter your address">
+                    <textarea type="text" class="form-control" id="address" placeholder="Enter your address"></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="phone" class="form-label">Phone Number</label>
+                    <input type="text" class="form-control" id="phone" placeholder="Enter your Phone Number">
                 </div>
 
                 <!-- Payment Method -->
                 <div class="mb-3">
                     <label class="form-label">Payment Method</label>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="payment" id="cod" value="Cash on Delivery"
+                        <input class="form-check-input" type="radio"  name="payment" id="cod" value="1"
                                checked>
                         <label class="form-check-label" for="cod">
                             Cash on Delivery
                         </label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="payment" id="bkash" value="Bkash">
+                        <input class="form-check-input" type="radio" name="payment" id="bkash" value="2">
                         <label class="form-check-label" for="bkash">
                             Bkash
                         </label>
@@ -62,7 +66,7 @@
 
                 <!-- Place Order Button -->
                 <div class="text-end">
-                    <button class="btn btn-primary">Place Order</button>
+                    <button class="btn placeOrder btn-primary">Place Order</button>
                 </div>
 
             </div>
@@ -99,7 +103,7 @@
             };
             Ajax.post("/shoppingCart/incrementDecrement", requestBody, null, true)
                 .then(response => {
-                    if (response.statusCode!==200){
+                    if (response.statusCode !== 200) {
                         showWarningToast(response.message);
                         return;
                     }
@@ -115,7 +119,7 @@
                 });
         });
 
-        $(document).on("click", ".crossbtn", function (){
+        $(document).on("click", ".crossbtn", function () {
             let productId = $(this).data("id");
             let $row = $(this).closest('tr');
 
@@ -141,7 +145,7 @@
                     showShoppingCartCount();//For show product count in header icon
 
 
-                   $('.cart-table').DataTable().row($row).remove().draw(); // remove row from DataTable
+                    $('.cart-table').DataTable().row($row).remove().draw(); // remove row from DataTable
 
                     if ($.fn.DataTable.isDataTable('.cart-table')) {
                         $('.cart-table').DataTable().destroy();
@@ -176,6 +180,63 @@
                     }
                 });
         });
+
+        $(document).on("click", ".placeOrder", function () {
+            let credential = window.getCredential();
+
+            if (!credential || !credential.content || !credential.content.userId) {
+                console.warn("User not logged in — redirecting...");
+                window.location.href = "/login";
+                return;
+            }
+
+            let userId = credential.content.userId;
+            let address = $("#address").val();
+            let phoneNumber = $("#phone").val();
+            let paymentMethod = $('input[name="payment"]:checked').val();
+
+            if (!address || address.trim() === '') {
+                toastr.error("Address is required.");
+                return false;
+            }
+
+            if (!phoneNumber || phoneNumber.trim() === '') {
+                toastr.error("Phone Number is required.");
+                return false;
+            }
+
+            if (!paymentMethod) {
+                toastr.error("Payment Method is required.");
+                return false;
+            }
+
+            let requestBody = {
+                userId: userId,
+                address: address,
+                phoneNumber: phoneNumber,
+                paymentMethod: paymentMethod
+
+            };
+            Ajax.post("/orders/placeOrder", requestBody, null, true)
+                .then(response => {
+
+                    if(response.statusCode===200){
+                        console.log(response.message);
+
+                        showSuccessToast(response.message);
+                        setTimeout(function (){
+                            window.location.reload();
+                        },1000)
+                    }else {
+                        showWarningToast(response.message);
+                    }
+                })
+                .catch(error => {
+                    console.log(error);
+                   showErrorToast("Error adding to cart:", +error);
+                });
+        });
+
 
         function getAllShoppingCart() {
             Ajax.get("/shoppingCart/getAll", null, null)
@@ -253,6 +314,7 @@
                 showErrorToast("Error " + error);
             })
         }
+
 
         async function showShoppingCartCount() {
             let shoppingCartCountSelection = $(".shoppingCartCount");

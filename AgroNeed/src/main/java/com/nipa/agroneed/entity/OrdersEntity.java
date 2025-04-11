@@ -18,6 +18,16 @@ public class OrdersEntity extends BaseEntity {
     @Column(name = "numbers_of_products")
     private Integer numberOfProducts;
 
+    @Column(name = "address")
+    private String address;
+
+    @Column(name = "phone_number")
+    private  String phoneNumber;
+
+    @Column(name = "payment_method")
+    private  Integer paymentMethod;
+
+
     //status in enum
 
 //    order_id INT PRIMARY KEY AUTO_INCREMENT,

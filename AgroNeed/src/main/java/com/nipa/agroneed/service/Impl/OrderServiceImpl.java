@@ -65,6 +65,9 @@ public class OrderServiceImpl implements OrderService {
 
         OrdersEntity order = new OrdersEntity();
         order.setUserId(placeOrderDto.getUserId());
+        order.setAddress(placeOrderDto.getAddress());
+        order.setPhoneNumber(placeOrderDto.getPhoneNumber());
+        order.setPaymentMethod(placeOrderDto.getPaymentMethod());
         order.setStatus(1);
         order.setTotalPrice(totalPrice);
         order.setNumberOfProducts(totalNumberOfProducts);

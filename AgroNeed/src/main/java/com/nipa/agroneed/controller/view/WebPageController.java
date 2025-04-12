@@ -8,6 +8,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class WebPageController {
 
+    @GetMapping("/")
+    public String redirectToDashboard() {
+        return "redirect:/pages/dashboard";
+    }
 
     @GetMapping("/login")
     public String login() {

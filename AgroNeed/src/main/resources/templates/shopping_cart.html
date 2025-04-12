@@ -224,9 +224,9 @@
                         console.log(response.message);
 
                         showSuccessToast(response.message);
-                        setTimeout(function (){
-                            window.location.reload();
-                        },1000)
+                        setTimeout(function () {
+                            window.location.href = "/pages/success-order-conformation"
+                        }, 1000)
                     }else {
                         showWarningToast(response.message);
                     }

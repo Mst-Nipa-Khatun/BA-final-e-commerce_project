@@ -110,7 +110,17 @@
 
                 $.ajax(settings).done(function (response) {
                     console.log(response);
-                    toastr.success(response.message);
+
+                    if (response.statusCode !== 201) {
+                        showWarningToast(response.message)
+                        return;
+                    }
+                    showSuccessToast(response.message);
+
+                    setTimeout(function () {
+                        window.location.reload();
+                    }, 1500)
+
                     //location.reload();
                 }).fail(function (jqXHR, textStatus, errorThrown) {
                     console.error("AJAX Error:", textStatus, errorThrown);
@@ -125,7 +135,7 @@
                         errorMessage = jqXHR.responseText;
                     }
 
-                    toastr.error(errorMessage);
+                    showErrorToast(errorMessage);
                 });
             }
         });
@@ -152,9 +162,10 @@
             toastr.error("No file selected!");
             return;
         }
-        const validTypes = ['image/jpeg', 'image/png', 'image/gif'];
+        const validTypes = ['image/jpeg', 'image/png', 'image/gif',"image/webp"];
         if (!validTypes.includes(file.type)) {
             toastr.error("Invalid file type! Please select an image file.");
+            return false;
         }
 
         if (name === undefined || name === '' || name.trim() === '') {

@@ -35,4 +35,8 @@ public class PageController {
         model.addAttribute("products", response.getContent());
         return "current_product";
     }
+    @GetMapping("/success-order-conformation")
+    public String viewSuccessOrderConformation(Model model) {
+        return "success_order";
+    }
 }

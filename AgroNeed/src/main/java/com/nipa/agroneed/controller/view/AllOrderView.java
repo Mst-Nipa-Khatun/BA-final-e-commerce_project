@@ -10,4 +10,5 @@ public class AllOrderView {
     public String addProducts() {
         return "view_all_orders";
     }
+
 }

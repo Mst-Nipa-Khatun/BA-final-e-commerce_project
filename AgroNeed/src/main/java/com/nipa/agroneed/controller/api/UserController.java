@@ -17,6 +17,7 @@ public class UserController {
     public UserController(UserService userService) {
         this.userService = userService;
     }
+
     @PostMapping(UrlConstraint.Users.CREATE)
     public Response userRegister(@RequestBody UserDto userDto) {
         return userService.userRegister(userDto);

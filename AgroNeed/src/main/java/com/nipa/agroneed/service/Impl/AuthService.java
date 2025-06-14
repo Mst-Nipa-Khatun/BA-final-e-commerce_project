@@ -19,6 +19,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -80,6 +81,14 @@ public class AuthService {
             user.setStatus(1);
             user.setName(userDto.getUsername());
             user.setPhone(userDto.getPhone());
+
+            List<Role> roles = new ArrayList<>();
+            Role role = new Role();
+            role.setName("ROLE_ADMIN");
+            role.setStatus(1);
+            roles.add(role);
+            user.setRoles(roles);
+
             String encodedPass = passwordEncoder.encode(userDto.getPassword());
             user.setPasswordHash(encodedPass);
             user.setEmail(userDto.getEmail());

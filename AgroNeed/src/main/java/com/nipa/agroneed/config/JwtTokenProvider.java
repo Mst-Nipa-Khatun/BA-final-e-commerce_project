@@ -22,7 +22,7 @@ public class JwtTokenProvider {
     public boolean isValidateToken(String jwtToken, HttpServletRequest request) {
         try {
             Jwts.parserBuilder()
-                    .setSigningKey(key) // ✅ Use Key object instead of String
+                    .setSigningKey(key) // Use Key object instead of String
                     .build()
                     .parseClaimsJws(jwtToken);
             return true;
@@ -33,7 +33,7 @@ public class JwtTokenProvider {
 
     public Long getUserIdFromToken(String jwtToken) {
         Claims claims = Jwts.parserBuilder()
-                .setSigningKey(key) // ✅ Fixed signing key usage
+                .setSigningKey(key) // Fixed signing key usage
                 .build()
                 .parseClaimsJws(jwtToken)
                 .getBody();
@@ -46,11 +46,11 @@ public class JwtTokenProvider {
 
         return Jwts.builder()
                 .setId(UUID.randomUUID().toString())
-                .claim("phone", userPrincipal.getUsername()) // ✅ Payload claim
+                .claim("phone", userPrincipal.getUsername()) // Payload claim
                 .setSubject(String.valueOf(userPrincipal.getId()))
                 .setIssuedAt(now)
-                .setExpiration(getExpirationTime(5L)) // ✅ 5-hour expiration
-                .signWith(key, SignatureAlgorithm.HS256) // ✅ Use Key object, HS256
+                .setExpiration(getExpirationTime(5L)) // 5-hour expiration
+                .signWith(key, SignatureAlgorithm.HS256) // Use Key object, HS256
                 .compact();
     }
 

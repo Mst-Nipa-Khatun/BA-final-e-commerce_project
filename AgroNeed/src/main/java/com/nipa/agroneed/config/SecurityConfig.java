@@ -53,11 +53,11 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception { //securityFilterChain is in spring set security configuration
         http
                 // csrf-cross site request forgery when .disable means off the csrf protecion,Basically csrf alsways enable
-                //if we want we can off this protection howerver in this application we pass the jwt token thats why we disable this csrf protection
+                //if we want,we can off this protection howerver in this application we pass the jwt token thats why we disable this csrf protection
                 .csrf(csrf -> csrf.disable())
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))  //cors-Cross origin resources sharing is browser side security feature,where we can API access one domain to another domain.
-                .exceptionHandling(ex -> ex.authenticationEntryPoint(myAuthenticationEntryPoint)) //exception handle kora hoyeche,when unauthorised user can access in API then show the message 401,403.here we creaye a custom class where we decelare
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))//In this application we use jwt thats why no nned to store any session.here stateless means every request can be checked newly,don't create any session.
+                .exceptionHandling(ex -> ex.authenticationEntryPoint(myAuthenticationEntryPoint)) //exception handle kora hoyeche,when unauthorised user can access in API then show the message 401,403.here we create a custom class where we decelare
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))//In this application we use jwt thats why no need to store any session.here stateless means every request can be checked newly,don't create any session.
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/login","/", "/pages/**", "/error", "/register",
                                 "/webjars/**", "/css/**", "/images/**", "/favicon.ico",
@@ -68,8 +68,8 @@ public class SecurityConfig {
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
-                .addFilterBefore(jwtAuthAndCookieFilter, UsernamePasswordAuthenticationFilter.class);//added jwt token authentication filter
-
+                //added jwt token authentication filter
+                .addFilterBefore(jwtAuthAndCookieFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build(); //lastly register in spring security
     }
 

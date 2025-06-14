@@ -15,7 +15,7 @@ public interface ProductsRepository extends JpaRepository<ProductsEntity,Long> {
     ProductsEntity findByIdAndStatus(Long id, Integer status);
 
 
-    List<ProductsEntity> findAllByStatus(Integer status);
+   // List<ProductsEntity> findAllByStatus(Integer status);
 
     @Query(value = "select p.id as productId,\n" +
             "       p.name as Name,\n" +

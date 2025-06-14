@@ -29,7 +29,7 @@ public class UserPrincipal implements UserDetails {
             List<GrantedAuthority> grantedAuthorityList = new ArrayList<>();
             user.getRoles().forEach(role -> {
                 SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(role.getName());
-                grantedAuthorityList.add(simpleGrantedAuthority);
+                grantedAuthorityList.add(simpleGrantedAuthority); //spring security k ble dichi ki ki role hobe
             });
             return new UserPrincipal(user.getId(), user.getPhone(), user.getPasswordHash(), grantedAuthorityList);
         } catch (Exception e) {

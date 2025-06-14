@@ -29,7 +29,7 @@ public class AuthController {
     public Response login(@RequestBody LoginDto loginDto, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
         return authService.login(loginDto, httpServletRequest, httpServletResponse);
     }
-    @PostMapping("/registerUser")
+    @PostMapping("/registerUser") //admin aro ekta user k add korte parbe as a admin
     public Response register(@RequestBody UserDto userDto) {
         return authService.register(userDto);
     }

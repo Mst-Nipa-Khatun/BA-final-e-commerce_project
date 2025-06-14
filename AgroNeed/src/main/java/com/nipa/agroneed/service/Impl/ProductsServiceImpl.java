@@ -45,7 +45,7 @@ public class ProductsServiceImpl implements ProductsService {
     @Override
     public Response addProducts(MultipartFile file, SelectedProductsDto selectedProductsDto) throws IOException {
         String directoryPath = new File(imageStoreLocation).getAbsolutePath();
-        File dir = new File(directoryPath);
+        File dir = new File(directoryPath); //system er file hisebe create holo
 
         // Create directory if not exists
         if (!dir.exists()) {
@@ -59,7 +59,7 @@ public class ProductsServiceImpl implements ProductsService {
         Path path = Paths.get(filePath);
 
         // Save file to disk
-        Files.write(path, file.getBytes());
+        Files.write(path, file.getBytes()); //automatic file e save kore dey
 
 
         CategoriesEntity categories = categoriesRepository.findByIdAndStatus(selectedProductsDto.getSelectedCategoryId(), 1);
@@ -93,11 +93,10 @@ public class ProductsServiceImpl implements ProductsService {
             productCategoriesEntity.setCategoryId(categories.getId());
             productCategoriesEntity.setStatus(1);
             productsCategoriesRepository.save(productCategoriesEntity);
+
             return ResponseBuilder.getSuccessResponse(HttpStatus.CREATED, null,
                     "Successfully added products");
         }
-
-
         return ResponseBuilder.getFailResponse(HttpStatus.BAD_REQUEST, null, "Product already exists");
     }
 
